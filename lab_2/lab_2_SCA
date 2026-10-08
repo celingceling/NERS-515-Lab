@@ -1,0 +1,92 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+# ============================================================
+# Shared styling helper
+# ============================================================
+def style_axis(ax):
+    ax.grid(False)
+    ax.tick_params(axis='both', which='both', direction='in', length=6, width=1.2)
+
+
+# ============================================================
+# Figure 1 (fig:integrator): Integrator-mode SCA (Table 1)
+# ============================================================
+sca_input_amplitude = [3150, 5125, 7175, 7875, 9975]   # Scope-measured amplitude V_m (mV)
+max_lld_setting      = [3000, 5620, 7050, 7700, 9900]  # Maximum LLD setting (mV)
+sca_rise_time        = [684, 710, 660, 780, 680]       # SCA rise time (ns)
+
+fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+ax1.plot(sca_input_amplitude, max_lld_setting, 'o-', linewidth=2, markersize=8, label='Data')
+ax1.set_xlabel('SCA Input Amplitude (mV)', fontsize=12, fontweight='bold')
+ax1.set_ylabel('Maximum LLD Setting (mV)', fontsize=12, fontweight='bold')
+ax1.set_title('SCA Input Amplitude vs Maximum LLD Setting', fontsize=12, fontweight='bold')
+ax1.legend(loc='best', fontsize=10)
+style_axis(ax1)
+
+ax2.plot(sca_input_amplitude, sca_rise_time, 'o-', linewidth=2, markersize=8, color='orange', label='Data')
+ax2.set_xlabel('SCA Input Amplitude (mV)', fontsize=12, fontweight='bold')
+ax2.set_ylabel('SCA Rise Time (ns)', fontsize=12, fontweight='bold')
+ax2.set_title('SCA Rise Time vs SCA Input Amplitude', fontsize=12, fontweight='bold')
+ax2.legend(loc='best', fontsize=10)
+style_axis(ax2)
+
+fig1.tight_layout()
+fig1.savefig('graph_integrator.png', dpi=300)
+
+# ============================================================
+# Figure 2 (fig:window): Window-mode SCA (Table 2, gain = 4)
+# ============================================================
+# Each dict entry: LLD setting -> (window sizes, Vmin, Vmax)
+window_data = {
+    '6.83 V': {'window': [2.4, 3.1, 4.5], 'vmin': [5.83, 5.83, 5.83], 'vmax': [5.99, 6.05, 6.17]},
+    '8.0 V':  {'window': [2.4, 3.1, 4.5], 'vmin': [6.84, 6.84, 6.84], 'vmax': [6.98, 7.05, 7.16]},
+    '4.0 V':  {'window': [2.4, 3.1, 4.5], 'vmin': [3.4,  3.4,  3.4 ], 'vmax': [3.56, 3.62, 3.75]},
+}
+
+fig2, ax3 = plt.subplots(figsize=(8, 6))
+colors = ['tab:blue', 'tab:green', 'tab:red']
+
+for (lld, d), c in zip(window_data.items(), colors):
+    ax3.plot(d['window'], d['vmax'], 'o-', linewidth=2, markersize=8, color=c,
+             label=f'LLD = {lld} ($V_{{max}}$)')
+    ax3.plot(d['window'], d['vmin'], 's--', linewidth=1.5, markersize=7, color=c,
+             label=f'LLD = {lld} ($V_{{min}}$)')
+
+ax3.set_xlabel('Window Size Setting (V)', fontsize=12, fontweight='bold')
+ax3.set_ylabel('Discriminated Pulse Amplitude (V)', fontsize=12, fontweight='bold')
+ax3.set_title('Window-Mode SCA: Discriminated Amplitude vs Window Size', fontsize=12, fontweight='bold')
+ax3.legend(loc='best', fontsize=9)
+style_axis(ax3)
+
+fig2.tight_layout()
+fig2.savefig('graph_window.png', dpi=300)
+
+# ============================================================
+# Figure 3 (fig:normal): Normal-mode SCA (Table 3, gain = 4)
+# ============================================================
+normal_data = {
+    '4.0 V': {'upper': [5.0, 6.0, 8.5],  'vmin': [3.4,  3.4,  3.4 ], 'vmax': [4.18, 5.05, 7.22]},
+    '2.5 V': {'upper': [4.0, 6.0, 10.0], 'vmin': [2.09, 2.09, 2.09], 'vmax': [3.32, 5.12, 8.53]},
+    '6.5 V': {'upper': [7.0, 8.6, 10.0], 'vmin': [5.55, 5.55, 5.55], 'vmax': [5.93, 7.29, 8.53]},
+}
+
+fig3, ax4 = plt.subplots(figsize=(8, 6))
+
+for (lld, d), c in zip(normal_data.items(), colors):
+    ax4.plot(d['upper'], d['vmax'], 'o-', linewidth=2, markersize=8, color=c,
+             label=f'LLD = {lld} ($V_{{max}}$)')
+    ax4.plot(d['upper'], d['vmin'], 's--', linewidth=1.5, markersize=7, color=c,
+             label=f'LLD = {lld} ($V_{{min}}$)')
+
+ax4.set_xlabel('Upper-Level Setting (V)', fontsize=12, fontweight='bold')
+ax4.set_ylabel('Discriminated Pulse Amplitude (V)', fontsize=12, fontweight='bold')
+ax4.set_title('Normal-Mode SCA: Discriminated Amplitude vs Upper-Level Setting', fontsize=12, fontweight='bold')
+ax4.legend(loc='best', fontsize=9)
+style_axis(ax4)
+
+fig3.tight_layout()
+fig3.savefig('graph_normal.png', dpi=300)
+
+plt.show()
