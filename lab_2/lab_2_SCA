@@ -1,31 +1,32 @@
-import matplotlib.pyplot as plt
+import struct
 import numpy as np
+import matplotlib.pyplot as plt
 
-# ============================================================
-# Shared styling helper
-# ============================================================
 def style_axis(ax):
     ax.grid(False)
     ax.tick_params(axis='both', which='both', direction='in', length=6, width=1.2)
 
-
 # ============================================================
-# Figure 1 (fig:integrator): Integrator-mode SCA (Table 1)
+# Figure: Integrator mode (stacked subplots, with error bars)
 # ============================================================
-sca_input_amplitude = [3150, 5125, 7175, 7875, 9975]   # Scope-measured amplitude V_m (mV)
-max_lld_setting      = [3000, 5620, 7050, 7700, 9900]  # Maximum LLD setting (mV)
-sca_rise_time        = [684, 710, 660, 780, 680]       # SCA rise time (ns)
+sca_input_amplitude = np.array([3150, 5125, 7175, 7875, 9975])   # mV
+amp_err              = 25.4   # mV, sigma_m, constant across all trials
+max_lld_setting      = np.array([3000, 5620, 7050, 7700, 9900])  # mV
+sca_rise_time        = np.array([684, 710, 660, 780, 680])       # ns
+rise_err             = 86.0   # ns, constant across all trials
 
-fig1, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+fig1, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 11))
 
-ax1.plot(sca_input_amplitude, max_lld_setting, 'o-', linewidth=2, markersize=8, label='Data')
+ax1.errorbar(sca_input_amplitude, max_lld_setting, xerr=amp_err, fmt='o-',
+             linewidth=2, markersize=8, capsize=4, label='Data')
 ax1.set_xlabel('SCA Input Amplitude (mV)', fontsize=12, fontweight='bold')
 ax1.set_ylabel('Maximum LLD Setting (mV)', fontsize=12, fontweight='bold')
 ax1.set_title('SCA Input Amplitude vs Maximum LLD Setting', fontsize=12, fontweight='bold')
 ax1.legend(loc='best', fontsize=10)
 style_axis(ax1)
 
-ax2.plot(sca_input_amplitude, sca_rise_time, 'o-', linewidth=2, markersize=8, color='orange', label='Data')
+ax2.errorbar(sca_input_amplitude, sca_rise_time, xerr=amp_err, yerr=rise_err, fmt='o-',
+             linewidth=2, markersize=8, capsize=4, color='orange', label='Data')
 ax2.set_xlabel('SCA Input Amplitude (mV)', fontsize=12, fontweight='bold')
 ax2.set_ylabel('SCA Rise Time (ns)', fontsize=12, fontweight='bold')
 ax2.set_title('SCA Rise Time vs SCA Input Amplitude', fontsize=12, fontweight='bold')
@@ -34,59 +35,155 @@ style_axis(ax2)
 
 fig1.tight_layout()
 fig1.savefig('graph_integrator.png', dpi=300)
+plt.close(fig1)
 
 # ============================================================
-# Figure 2 (fig:window): Window-mode SCA (Table 2, gain = 4)
+# Figure: Window mode -- range of input pulse heights vs window width
+# (all three LLD settings on one graph, per Section 2.2.2 of the manual)
 # ============================================================
-# Each dict entry: LLD setting -> (window sizes, Vmin, Vmax)
 window_data = {
-    '6.83 V': {'window': [2.4, 3.1, 4.5], 'vmin': [5.83, 5.83, 5.83], 'vmax': [5.99, 6.05, 6.17]},
-    '8.0 V':  {'window': [2.4, 3.1, 4.5], 'vmin': [6.84, 6.84, 6.84], 'vmax': [6.98, 7.05, 7.16]},
-    '4.0 V':  {'window': [2.4, 3.1, 4.5], 'vmin': [3.4,  3.4,  3.4 ], 'vmax': [3.56, 3.62, 3.75]},
+    '6.83 V': {'setting': [2.4, 3.1, 4.5], 'vmin': [5.83,5.83,5.83], 'vmax': [5.99,6.05,6.17]},
+    '8.0 V':  {'setting': [2.4, 3.1, 4.5], 'vmin': [6.84,6.84,6.84], 'vmax': [6.98,7.05,7.16]},
+    '4.0 V':  {'setting': [2.4, 3.1, 4.5], 'vmin': [3.4, 3.4, 3.4 ], 'vmax': [3.56,3.62,3.75]},
 }
-
-fig2, ax3 = plt.subplots(figsize=(8, 6))
 colors = ['tab:blue', 'tab:green', 'tab:red']
 
+fig2, ax3 = plt.subplots(figsize=(8,6))
 for (lld, d), c in zip(window_data.items(), colors):
-    ax3.plot(d['window'], d['vmax'], 'o-', linewidth=2, markersize=8, color=c,
-             label=f'LLD = {lld} ($V_{{max}}$)')
-    ax3.plot(d['window'], d['vmin'], 's--', linewidth=1.5, markersize=7, color=c,
-             label=f'LLD = {lld} ($V_{{min}}$)')
+    nominal_width = [s/10.0 for s in d['setting']]          # dial setting -> volts (setting/10)
+    measured_width = [vx - vn for vx, vn in zip(d['vmax'], d['vmin'])]
+    ax3.plot(nominal_width, measured_width, 'o-', linewidth=2, markersize=8, color=c,
+             label=f'LLD = {lld}')
 
-ax3.set_xlabel('Window Size Setting (V)', fontsize=12, fontweight='bold')
-ax3.set_ylabel('Discriminated Pulse Amplitude (V)', fontsize=12, fontweight='bold')
-ax3.set_title('Window-Mode SCA: Discriminated Amplitude vs Window Size', fontsize=12, fontweight='bold')
+lims = [0, 0.5]
+ax3.plot(lims, lims, 'k--', linewidth=1, label='1:1 reference')
+
+ax3.set_xlabel('Nominal Window Width Setting (V)', fontsize=12, fontweight='bold')
+ax3.set_ylabel('Measured Pulse-Height Range ($V_{max}-V_{min}$) (V)', fontsize=12, fontweight='bold')
+ax3.set_title('Window-Mode SCA: Measured Range vs Window Width', fontsize=12, fontweight='bold')
 ax3.legend(loc='best', fontsize=9)
 style_axis(ax3)
-
 fig2.tight_layout()
 fig2.savefig('graph_window.png', dpi=300)
+plt.close(fig2)
 
 # ============================================================
-# Figure 3 (fig:normal): Normal-mode SCA (Table 3, gain = 4)
+# Figure: Normal mode (Vmin/Vmax vs upper-level setting, per LLD)
 # ============================================================
 normal_data = {
-    '4.0 V': {'upper': [5.0, 6.0, 8.5],  'vmin': [3.4,  3.4,  3.4 ], 'vmax': [4.18, 5.05, 7.22]},
-    '2.5 V': {'upper': [4.0, 6.0, 10.0], 'vmin': [2.09, 2.09, 2.09], 'vmax': [3.32, 5.12, 8.53]},
-    '6.5 V': {'upper': [7.0, 8.6, 10.0], 'vmin': [5.55, 5.55, 5.55], 'vmax': [5.93, 7.29, 8.53]},
+    '4.0 V': {'upper': [5.0,6.0,8.5],  'vmin':[3.4,3.4,3.4],   'vmax':[4.18,5.05,7.22]},
+    '2.5 V': {'upper': [4.0,6.0,10.0], 'vmin':[2.09,2.09,2.09],'vmax':[3.32,5.12,8.53]},
+    '6.5 V': {'upper': [7.0,8.6,10.0], 'vmin':[5.55,5.55,5.55],'vmax':[5.93,7.29,8.53]},
 }
-
-fig3, ax4 = plt.subplots(figsize=(8, 6))
-
+fig3, ax4 = plt.subplots(figsize=(8,6))
 for (lld, d), c in zip(normal_data.items(), colors):
-    ax4.plot(d['upper'], d['vmax'], 'o-', linewidth=2, markersize=8, color=c,
-             label=f'LLD = {lld} ($V_{{max}}$)')
-    ax4.plot(d['upper'], d['vmin'], 's--', linewidth=1.5, markersize=7, color=c,
-             label=f'LLD = {lld} ($V_{{min}}$)')
-
+    ax4.plot(d['upper'], d['vmax'], 'o-', linewidth=2, markersize=8, color=c, label=f'LLD = {lld} ($V_{{max}}$)')
+    ax4.plot(d['upper'], d['vmin'], 's--', linewidth=1.5, markersize=7, color=c, label=f'LLD = {lld} ($V_{{min}}$)')
 ax4.set_xlabel('Upper-Level Setting (V)', fontsize=12, fontweight='bold')
 ax4.set_ylabel('Discriminated Pulse Amplitude (V)', fontsize=12, fontweight='bold')
 ax4.set_title('Normal-Mode SCA: Discriminated Amplitude vs Upper-Level Setting', fontsize=12, fontweight='bold')
 ax4.legend(loc='best', fontsize=9)
 style_axis(ax4)
-
 fig3.tight_layout()
 fig3.savefig('graph_normal.png', dpi=300)
+plt.close(fig3)
 
-plt.show()
+# ============================================================
+# Parse the 9 .Chn MCA spectra (needed for the remaining MCA plots)
+# NOTE: requires lab2_3_2_1_1.Chn ... lab2_3_2_1_9.Chn in the same folder
+# ============================================================
+rows = [
+ (10,   '1.0 V',   2.62),
+ (10,   '3.0 V',   4.68),
+ (10,   '0.5 V',   0.671),
+ (11.8, '820 mV',  1.3),
+ (11.8, '1.5 V',   2.3),
+ (11.8, '2.71 V',  3.9),
+ (13.6, '28.6 mV', 0.4962),
+ (13.6, '4.1 V',   7.04),
+ (13.6, '1.5 V',   2.7),
+]
+
+spectra = []
+for i in range(1,10):
+    fn = f'lab2_3_2_1_{i}.Chn'
+    with open(fn,'rb') as f:
+        data = f.read()
+    realtime, livetime = struct.unpack_from('<II', data, 8)
+    offset_ch, num_ch = struct.unpack_from('<HH', data, 28)
+    counts = np.array(struct.unpack_from('<%dI' % num_ch, data, 32))
+    peak_ch = int(np.argmax(counts))
+    lo, hi = max(0,peak_ch-15), min(num_ch,peak_ch+16)
+    net = int(counts[lo:hi].sum())
+    live_s = livetime*0.02
+    spectra.append(dict(gain=rows[i-1][0], v0=rows[i-1][1], vmeas=rows[i-1][2],
+                         counts=counts, peak_ch=peak_ch, net=net, live_s=live_s,
+                         rate=net/live_s))
+
+gains = sorted(set(s['gain'] for s in spectra))
+gain_colors = {10:'tab:blue', 11.8:'tab:green', 13.6:'tab:red'}
+
+# ---- Figure: recreated MCA spectra (counts vs channel, zoomed, per gain) ----
+fig4, axes = plt.subplots(1, 3, figsize=(16,5), sharey=True)
+for ax, g in zip(axes, gains):
+    runs = [s for s in spectra if s['gain']==g]
+    for s in runs:
+        lo, hi = max(0, s['peak_ch']-40), s['peak_ch']+41
+        ch = np.arange(lo, hi)
+        ax.plot(ch, s['counts'][lo:hi], linewidth=1.5,
+                label=f"$V_0$={s['v0']} ({s['vmeas']} V meas.)")
+    ax.set_xlabel('MCA Channel Number', fontsize=11, fontweight='bold')
+    ax.set_title(f'Amplifier Gain = {g}', fontsize=11, fontweight='bold')
+    ax.legend(loc='best', fontsize=8)
+    style_axis(ax)
+axes[0].set_ylabel('Counts', fontsize=11, fontweight='bold')
+fig4.tight_layout()
+fig4.savefig('graph_mca_spectra.png', dpi=300)
+plt.close(fig4)
+
+# ---- Figure: amplitude & net count rate vs channel number, 3 gains, with linear fit + R^2 ----
+fit_pts = [s for s in spectra if not (s['gain']==13.6 and abs(s['vmeas']-7.04) < 1e-6)]
+x = np.array([s['vmeas'] for s in fit_pts])
+y = np.array([s['peak_ch'] for s in fit_pts])
+A = np.vstack([x, np.ones_like(x)]).T
+slope, intercept = np.linalg.lstsq(A, y, rcond=None)[0]
+y_pred = slope*x + intercept
+ss_res = np.sum((y - y_pred)**2)
+ss_tot = np.sum((y - np.mean(y))**2)
+r2 = 1 - ss_res/ss_tot
+print(f"Fit (excluding outlier): channel = {slope:.2f} x V + {intercept:.2f},  R^2 = {r2:.5f}")
+
+fig5, (axA, axB) = plt.subplots(1, 2, figsize=(14,6))
+for g in gains:
+    runs = sorted([s for s in spectra if s['gain']==g], key=lambda s: s['peak_ch'])
+    chans = [s['peak_ch'] for s in runs]
+    amps  = [s['vmeas'] for s in runs]
+    rates = [s['rate'] for s in runs]
+    axA.plot(chans, amps, 'o-', linewidth=2, markersize=8, color=gain_colors[g], label=f'Gain = {g}')
+    axB.plot(chans, rates, 'o-', linewidth=2, markersize=8, color=gain_colors[g], label=f'Gain = {g}')
+
+ch_line = np.linspace(min(y)-100, max(y)+100, 50)
+v_line = (ch_line - intercept)/slope
+axA.plot(ch_line, v_line, 'k--', linewidth=1.5, label='Linear fit (excl. outlier)')
+axA.text(0.05, 0.95, f'$R^2$ = {r2:.4f}', transform=axA.transAxes,
+         fontsize=12, fontweight='bold', verticalalignment='top')
+
+axA.set_xlabel('MCA Channel Number', fontsize=12, fontweight='bold')
+axA.set_ylabel('Amplifier Output Amplitude (V)', fontsize=12, fontweight='bold')
+axA.set_title('Amplifier Output Amplitude vs Channel Number', fontsize=12, fontweight='bold')
+axA.legend(loc='lower right', fontsize=9)
+style_axis(axA)
+
+axB.set_xlabel('MCA Channel Number', fontsize=12, fontweight='bold')
+axB.set_ylabel('Net Count Rate (counts/s)', fontsize=12, fontweight='bold')
+axB.set_title('Net Peak Count Rate vs Channel Number', fontsize=12, fontweight='bold')
+axB.legend(loc='best', fontsize=10)
+axB.set_ylim(0, max(s['rate'] for s in spectra)*1.3)
+style_axis(axB)
+
+fig5.tight_layout()
+fig5.savefig('graph_mca_required.png', dpi=300)
+plt.close(fig5)
+
+print("All figures written: graph_integrator.png, graph_window.png, graph_normal.png, "
+      "graph_mca_spectra.png, graph_mca_required.png")
