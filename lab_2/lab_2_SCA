@@ -106,7 +106,7 @@ rows = [
 
 spectra = []
 for i in range(1,10):
-    fn = f'lab2_3_2_1_{i}.Chn'
+    fn = f'mca_data/lab2_3_2_1_{i}.Chn'
     with open(fn,'rb') as f:
         data = f.read()
     realtime, livetime = struct.unpack_from('<II', data, 8)
@@ -165,8 +165,19 @@ for g in gains:
 ch_line = np.linspace(min(y)-100, max(y)+100, 50)
 v_line = (ch_line - intercept)/slope
 axA.plot(ch_line, v_line, 'k--', linewidth=1.5, label='Linear fit (excl. outlier)')
-axA.text(0.05, 0.95, f'$R^2$ = {r2:.4f}', transform=axA.transAxes,
-         fontsize=12, fontweight='bold', verticalalignment='top')
+
+# Inverted calibration: channel number -> voltage, in mV
+inv_slope_mV = 1000.0 / slope          # mV per channel
+inv_intercept_mV = -intercept * 1000.0 / slope   # mV
+
+fit_label = (
+    f'channel $= {slope:.2f}\\,V + {intercept:.2f}$\n'
+    f'$R^2$ = {r2:.4f}\n'
+    f'$V(n) = {inv_intercept_mV:.2f}\\ \\mathrm{{mV}} + {inv_slope_mV:.4f}\\ \\mathrm{{mV}} \\times n$'
+)
+axA.text(0.05, 0.95, fit_label, transform=axA.transAxes,
+         fontsize=11, fontweight='bold', verticalalignment='top',
+         bbox=dict(boxstyle='round', facecolor='white', alpha=0.85, edgecolor='gray'))
 
 axA.set_xlabel('MCA Channel Number', fontsize=12, fontweight='bold')
 axA.set_ylabel('Amplifier Output Amplitude (V)', fontsize=12, fontweight='bold')

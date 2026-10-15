@@ -158,6 +158,24 @@ print(f"                P(random sample shows larger fluctuation) = {p_poisson_p
 # GENERATE PLOTS
 # ============================================================================
 
+def add_count_error_bars(ax, counts, n_hist, edges):
+    """
+    Add statistical error bars to a unit-width, area-normalized histogram.
+
+    A bin holding f_i of the N measurements has Poisson uncertainty
+    sigma(f_i) = sqrt(f_i), so the plotted height P_i = f_i / N has
+        sigma(P_i) = sqrt(f_i) / N.
+    Empty bins (f_i = 0) are skipped because sqrt(0) = 0 would draw a
+    zero-length bar that falsely suggests the bin is exactly known.
+    """
+    N = len(counts)
+    centers = 0.5 * (edges[:-1] + edges[1:])
+    f = np.rint(n_hist * N)          # bin width is 1, so density = f / N
+    mask = f > 0
+    ax.errorbar(centers[mask], n_hist[mask], yerr=np.sqrt(f[mask]) / N,
+                fmt='none', ecolor='black', elinewidth=1.3, capsize=3,
+                label=r'Statistical error ($\pm\sqrt{f_i}/N$)')
+
 # -------- FIGURE 1: Gaussian Distribution (50 measurements) --------
 fig1, ax1 = plt.subplots(figsize=(12, 6))
 
@@ -166,6 +184,7 @@ counts_edges = np.arange(np.min(gaussian_counts) - 0.5, np.max(gaussian_counts) 
 n_hist, bins_edges, patches = ax1.hist(gaussian_counts, bins=counts_edges, density=True, 
                                         alpha=0.6, color='steelblue', edgecolor='black', 
                                         label='Measured Data')
+add_count_error_bars(ax1, gaussian_counts, n_hist, bins_edges)
 
 # Generate theoretical distributions
 x_range = np.linspace(np.min(gaussian_counts) - 2, np.max(gaussian_counts) + 2, 200)
@@ -203,6 +222,7 @@ counts_edges_poisson = np.arange(np.min(poisson_counts) - 0.5, np.max(poisson_co
 n_hist2, bins_edges2, patches2 = ax2.hist(poisson_counts, bins=counts_edges_poisson, density=True,
                                            alpha=0.6, color='steelblue', edgecolor='black',
                                            label='Measured Data')
+add_count_error_bars(ax2, poisson_counts, n_hist2, bins_edges2)
 
 # Generate theoretical distributions
 x_range_poisson = np.linspace(np.min(poisson_counts) - 1, np.max(poisson_counts) + 1, 200)
