@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{subcaption}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{array}
+\usepackage{makecell}
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\bibliographystyle{ieeetr}
+
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE University of Michigan}\\[1.5cm] % Name of your university/college
+\textsc{\Large NERS 515}\\[0.5cm] % Major heading such as course name
+\textsc{\large Nuclear Measurements Laboratory}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Laboratory 4: Geiger-M\"uller Counting}\\[0.4cm] % Title of your document
+\HRule \\[0.7cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\Large \emph{Authors:}\\
+Celing \textsc{Li}\\
+Charalampos Alexander \textsc{Korfiatis}\\[0.7cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large October XX, 2026}\\[0.7cm] % TODO: set the submission date
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[width=0.4\textwidth]{michigan_seal.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\begin{abstract}
+
+\phantomsection 
+\addcontentsline{toc}{section}{Abstract}
+
+% Written last by whoever finishes their part last. Answers first (operating voltage, plateau slope, absorption coefficient,
+% dead time from each method and which one is trusted).
+
+\end{abstract}
+
+
+\section{Introduction}
+
+This laboratory characterizes a Geiger-M\"uller (G-M) tube and the counting system connected to it. We first record the count rate and the pre-amplifier pulse height as the high voltage is raised, which gives the counting curve and the operating voltage on its plateau. At that voltage we compare the pulse heights from three beta emitters, and we measure how an aluminum absorber reduces the beta count rate to estimate the absorption coefficient and the beta endpoint energy. Finally, we measure the dead time and recovery time of the system with an oscilloscope, measure the dead time again with the two-source method, and compare the two results \cite{labmanual}.
+
+
+\section{Theory}
+
+% PARTNER writes this section.
+% Planned subsections (add as \subsection when writing). Cite Knoll, lecture slides, manual only.
+%  - Charge generation, transport and collection; thin anode wire
+%  - Quenching
+%  - Pulse height, counting curve and plateau
+%  - Counting statistics and error propagation
+%  - Beta absorption
+%  - Dead time (two-source and decaying-source methods)
+
+
+\section{Equipment and Procedure}
+
+\subsection{Equipment}
+
+Details of all equipment used in this lab are listed in Table \ref{tab:equipment}. The list does not include the serial numbers of the SCA and the High Voltage Power Supply because we were advised not to remove the instrument from the NIM, in case it caused other issues. In addition, we used a G-M tube, a preamplifier, a multichannel analyzer, and Th-232, Co-60, C-14 and Cl-36 sources as specified in the lab manual \cite{labmanual}.
+
+\begin{table}[H]
+    \centering
+    \resizebox{0.9\columnwidth}{!}{%
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Purpose} & \textbf{Manufacturer} & \textbf{Model} &\textbf{Serial Number} \\
+        \midrule
+        Oscilloscope & Agilent Technologies & DSO6052A & MY44007040\\ % CHECK: same unit as Lab 3?
+        High Voltage Power Supply & Ortec & 556 & - \\
+        Amplifier & Ortec & 572A & 121 \\
+        Single-Channel Analyzer & Ortec & 551 & - \\
+        Counter/Timer & Ortec & 994 & 2108 \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \caption{List of equipment used in Laboratory 4.}
+    \label{tab:equipment}
+\end{table}
+
+\subsection{Experimental Procedure}
+
+% Brief; reference the manual with \cite{labmanual}. Include the settings we found and used
+% (HV 650 to 910 V in 20 V steps, 30 s settle; V_op 840 V; LLD 0.1 V; 3 s counts; MCA 30 s real time).
+% MCA calibration from Lab 2: \cite{lab2}.
+
+
+\section{Data}
+
+% Raw data tables with commentary. Planned subsections:
+%  - Counting curve and pulse height vs high voltage
+%  - Pulse height consistency
+%  - Beta attenuation
+%  - Dead time (oscilloscope and two-source)
+
+
+\section{Analysis of Data}
+
+% CELING: calculations (formula, sample calculation, results, plots). Same measurement order as the Data section.
+% PARTNER: discussion after each subsection.
+
+
+\section{Conclusions}
+
+% PARTNER writes this section.
+
+\nocite{knoll,labmanual,lab2} % remove once these are cited in the text
+\bibliography{references}
+
+\end{document}

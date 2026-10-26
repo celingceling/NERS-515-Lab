@@ -1,0 +1,23 @@
+name,value,uncertainty,unit,source
+10 us peak area (estimated),772484.0,,counts,line through 3 and 6 us
+ballistic deficit at 0.5 us,28.846566789448474,0.050680796621283594,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
+ballistic deficit at 1 us,16.37237574536264,0.05383105021096932,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
+ballistic deficit at 2 us,8.49713417353529,0.05597289763146904,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
+ballistic deficit at 3 us,2.244346806296556,0.0577473813465268,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
+ballistic deficit at 6 us,1.616260055169219,0.05792898336225084,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
+alpha rate at 850 V,18773.933333333334,25.01595046720747,counts/s,"N/30 s, sqrt(N)/30 s (Eq. 3.40)"
+alpha rate at 900 V,20583.866666666665,26.194062092178235,counts/s,"N/30 s, sqrt(N)/30 s (Eq. 3.40)"
+alpha rate at 1000 V,22322.466666666667,27.2778705587922,counts/s,"N/30 s, sqrt(N)/30 s (Eq. 3.40)"
+alpha rate at 1050 V,9536.833333333334,17.829594623671188,counts/s,"N/30 s, sqrt(N)/30 s (Eq. 3.40)"
+d ln(centroid)/dV 900-1000 V,0.0016584718059903492,4.7859318564540475e-06,1/V,"two-point slope; Eq. 3.37, sigma_c=1 ch; Knoll Eq. 6.10"
+d ln(centroid)/dV 1000-1050 V,0.015922384181246033,6.787550349347938e-06,1/V,"two-point slope; Eq. 3.37, sigma_c=1 ch; Knoll Eq. 6.10"
+energy calibration factor k,2.31741780685932,0.000978932791022359,keV/channel,"5486 keV / C(3 us); Knoll Table 1.3; Eq. 3.37, sigma_c<=1 ch"
+beta rate at 1500 V,22157.5,27.17688969204043,counts/s,"N/30 s, sqrt(N)/30 s (Eq. 3.40)"
+beta rate at 1550 V,23096.1,27.74653131474275,counts/s,"N/30 s, sqrt(N)/30 s (Eq. 3.40)"
+gamma maximum rate,1712.0666666666666,7.554395335755794,counts/s,at 1600 V; Eq. 3.40
+efficiency-run rate,23803.183333333334,19.917824234143204,counts/s,1428191/60 s; Eq. 3.40
+marked activity A0,38184.0,0.0,Bq,1.032 uCi x 3.7e4 Bq/uCi (Knoll p. 2); no stated uncertainty
+activity at measurement,38184.0,0.0,Bq,"A0 exp(-lambda t), Knoll Eq. 1.1; T1/2 = 3.08e5 y"
+absolute efficiency,0.623381084572945,0.000521627494085041,,r/A; Eq. 3.37 (counting only); > 0.5 2pi limit
+intrinsic efficiency (Omega=2pi),1.24676216914589,0.001043254988170082,,"eps_abs 4pi/Omega, Knoll pp. 118-119"
+eff-run vs beta curve at 1500 V,7.427206739629177,0.15950563498164957,%,r_eff/r_curve - 1; Eq. 3.37

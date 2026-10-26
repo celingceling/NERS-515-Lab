@@ -1,0 +1,661 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{subcaption}
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+\usepackage{array}
+\usepackage{makecell}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[most]{tcolorbox}
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\newtcolorbox{samplecalc}[1]{breakable, colback=gray!5, colframe=gray!55, boxrule=0.4pt, arc=1pt,
+  left=8pt, right=8pt, top=4pt, bottom=2pt, title={#1}, fonttitle=\bfseries\small,
+  coltitle=black, colbacktitle=gray!20, before skip=6pt, after skip=8pt, fontupper=\small,
+  before upper={\setlength{\abovedisplayskip}{1pt}\setlength{\belowdisplayskip}{1pt}\setlength{\abovedisplayshortskip}{1pt}\setlength{\belowdisplayshortskip}{1pt}\setlength{\jot}{1.5pt}}}
+\graphicspath{{./}{figures/}{../figures/}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\bibliographystyle{ieeetr}
+
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE University of Michigan}\\[1.5cm] % Name of your university/college
+\textsc{\Large NERS 515}\\[0.5cm] % Major heading such as course name
+\textsc{\large Nuclear Measurements Laboratory}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Laboratory 4: Geiger-Muller Counting}\\[0.4cm] % Title of your document
+\HRule \\[0.7cm]
+
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\Large \emph{Authors:}\\
+Celing \textsc{Li}\\
+Charalampos Alexander \textsc{Korfiatis}\\[0.7cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large October 21, 2026}\\[0.7cm] % Date, change the \today to a set date if you want to be precise
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[width=0.4\textwidth]{michigan_seal.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\begin{abstract}
+
+\phantomsection
+\addcontentsline{toc}{section}{Abstract}
+
+
+
+\end{abstract}
+
+
+\section{Introduction}
+
+Geiger-M\"uller (G-M) tubes are one of the oldest radiation detectors and are still widely used because they are simple, cheap and easy to operate \cite{knoll}. The strong electric field in a G-M tube makes every event grow into a chain of avalanches of the same size, so the pulses are large, of the order of volts, and the tube needs little or no external amplification. The trade-offs are that the pulse height carries no energy information, so the tube can only count events, and that its dead time is longer than that of any other commonly used detector, which limits it to low count rates. In this laboratory we characterize a G-M tube as a counting system. We find its operating voltage from the counting curve and the pulse height as the high voltage is raised, compare the pulse heights from three beta emitters, estimate the absorption coefficient and endpoint energy of a beta source with aluminum absorbers, and measure the dead time with an oscilloscope and with the two-source method \cite{labmanual}.
+
+\section{Theory}
+\label{sec:theory}
+
+\subsection{GM Tube Operations and Quenching}
+\label{subsec:background}
+
+A GM tube is a thin anode wire at high voltage inside a gas-filled cylindrical cathode \cite{knoll}. Radiation ionizes the gas, and the free electrons drift toward the wire. Near the wire the electric field is strong enough that each electron ionizes more gas, setting off a chain reaction (an avalanche). The avalanche spreads along the whole wire until the slow positive ions left behind weaken the field and shut it off, so every recorded pulse is about the same size regardless the energy of the excited electrons. The anode wire is thin because a small radius concentrates the field near its surface, which produces avalanches at modest voltage and gives every event the same gain. Finally, a small amount of quench gas stops the positive ions from triggering a second discharge when they reach the cathode, so each event produces exactly one pulse.
+
+
+\subsection{Pulse Height and the Counting Curve}
+\label{subsec:pulseheight}
+
+\subsubsection{Pulse Height vs. High Voltage}
+\label{subsubsec:pulse_vs_volt}
+
+GM pulse height is set by the total charge Q in the discharge, not by the primary ionization. The discharge ends when the ion sheath drops the anode field below the critical value. At higher applied voltage, more spave charge is needed to reach that point, so Q, and hence pulse amplitude, increases roughly linearly with voltage above the Geiger threshold \cite{knoll}:
+
+\begin{equation}
+    Q \propto (V-V_{th})
+\end{equation}
+where $V-V_{th}$ is the change in voltage from the threshold to a higher one.
+
+\subsubsection{The Counting Curve}
+\label{subsubsec:counting}
+
+With a fixed discriminator level (LLD) and a constant source, the count rate versus applied voltage follows this figure from \cite{knoll}:
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{image.png}
+    \caption{Figure 7.5 from "Radiation Detection and Measurement" by G. F. Knoll.}
+    \label{fig:fig7.5}
+\end{figure}
+
+Figure \ref{fig:fig7.5} is a graph that represents the count rate as pulse amplitude increases. It is split in regions.
+
+\begin{itemize}
+    \item \textbf{Below the starting voltage:} pulses are smaller than the LLD and almost nothing is counted.
+    \item \textbf{Knee:} the voltage starts to rise above the threshold, and the pulse amplitudes grow past the LLD and the count rate climbs steeply.
+    \item \textbf{Plateau:} essentially every event that creates at least one ion pair in the active volume yields a pulse above the LLD, so the count rate depends only weakly on voltage. The operating voltage is generally chosen in the flattest part of the plateau, usually toward the lower-to-middle part, away from the onset of continuous discharge.
+\end{itemize}
+
+Sometimes there is a fourth region after the plateau. At high enough voltage, quenching fails and the count rate rises abruptly, to the point of damage to the detecting device.
+
+\subsubsection{Pulse Height Consistency}
+\label{subsubsec:heightconsistency}
+
+Because every discharge saturates at nearly the same charge, the pulse amplitude from a GM tube is the same regardless of beta source or energy at a fixed voltage. The MCA spectrum is a single peak, not an energy spectrum, so using different sources change only the count rate. A slight drop in centroid may appear at high count rates because more pulses arrive before full recovery.
+
+\subsection{Beta Particle Attenuation}
+\label{subsec:beta_atten}
+
+For beta sources, transmission through an absorber falls off nearly exponentially over most of the range, which lets the absorption coefficient be read from a semilog plot \cite{knoll}. Monoenergetic electrons do not attenuate esponentially, but a beta spectrym is continuous up to the endpoint energy $E_m$. Low-energy betas are removed quickly and the rest are scattered and slowed, and these effects combine to give an approximately exponential curve:
+
+\begin{equation}
+    \frac{I}{I_0} = e^{-nt}
+    \label{eq:atten}
+\end{equation}
+
+Here, $I_0$ is the net count rate without an absorber, I is the net rate through thickness $t$\footnote{Here, the thickness $t$ is the thickness of the absorber.}, and n is the absorption coefficient. Writing the thickness as mass thickness ($\rho t$)\footnote{units of mg/cm$^{2}$}, gives the mass absorption coefficient $n/\rho$. Now, we can rewrite Eq.\ \eqref{eq:atten} as:
+
+\begin{align}
+    \frac{I}{I_0} &= e^{-(n/\rho)(\rho t)} \\
+    \ln{I} &= \ln{I_0} - \left(\frac{n}{\rho}\right)(\rho t)
+\end{align}
+
+Figure \ref{fig:fig2.16} plots $n/\rho$ in aluminum against $E_m$ for several beta emitters \cite{knoll}. Comparing the measured $n/\rho$ to this plot gives an estimate of the endpoint energy.
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{image1.png}
+    \caption{Figure 2.16 of "Radiation Detection and Measurement" by G. F. Knoll.}
+    \label{fig:fig2.16}
+\end{figure}
+
+\subsection{Dead Time, Resolving Time, and Recovery Time}
+\label{subsec:deadtime}
+
+GM tubes have among the longest dead times of common detectors because the electric field near the anode stays suppressed until the slow ion sheath drifts away \cite{knoll}. Three intervals are defined after a discharge according to \cite{knoll}:
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{image2.png}
+    \caption{Figure 7.4 from "Radiation Detection and Measurement" by G. F. Knoll.}
+    \label{fig:fig7.4}
+\end{figure}
+
+Figure \ref{fig:fig7.4} illustrates those intervals.
+
+\begin{itemize}
+    \item \textbf{Dead Time, $\tau$:} Time after a discharge during which the electric field is too low for any new discharge (no pulse forms).
+    \item \textbf{Resolving Time, $t_r$:} Time until a second pulse is large enough to exceed the discriminator level and be counted.
+    \item \textbf{Recovery Time:} Time until a second pulse reaches full amplitude.
+\end{itemize}
+
+Therefore, we can safely say that $\tau < t_r < $ recovery time.
+
+\subsubsection{Important Dead Time Models}
+\label{subsubsec:deadmodels}
+
+For this laboratory, we emphasized non-paralyzable model:
+
+\begin{equation}
+    n = \frac{m}{1-m\tau}
+\end{equation}
+
+where $n$ is the true interaction rate, $m$ is the recorded rate, and $\tau$ is the dead time (as mentioned above) \cite{knoll}. At moderate rates, like this laboratory, the count rates are better described using the non-paralyzable model because pulses during the dead period form no discharge and do not extend it.
+
+\subsubsection{Two-Source Method}
+\label{subsubsec:twosource}
+
+The two-source method relies on true rates adding linearly while recorded rates do not \cite{knoll}. With true rates $n_1, n_2, n_{12},$ and $n_b$, and recorded rates $m_1, m_2, m_{12},$ and $m_b$\footnote{The subscripts "1" and "2" are used for two different sources, while "12" is both source 1 and 2 together, and "b" represents background.}, we can state:
+
+\begin{align}
+    n_{12} - n_b &= (n_1 - n_b) + (n_2 - n_b) \nonumber \\
+    n_{12} + n_b &= n_1 + n_2
+\end{align}
+
+Substituting the non-paralyzable model for each $n$ and solving for $\tau$, we obtain the exact solution that Knoll derived \cite{knoll}:
+
+\begin{equation}
+    \tau = \frac{X\left(1-\sqrt{1-Z}\right)}{Y}
+\end{equation}
+
+where
+
+\begin{align*}
+    X &= m_1 m_2 - m_{12} m_b \\
+    Y &= m_1 m_2 (m_{12} + m_b) - m_{12} m_b (m_1 + m_2) \\
+    Z &= \frac{Y\,(m_1 + m_2 - m_{12} - m_b)}{X^{2}}
+\end{align*}
+
+
+\section{Equipment and Procedure}
+
+\subsection{Equipment}
+
+Details of all equipment used in this lab are listed in Table \ref{tab:equipment}. The list does not include the serial numbers of the SCA and the High Voltage Power Supply because we were advised not to remove the instrument from the NIM, in case it caused other issues. In addition, we used a G-M tube, a preamplifier, a multichannel analyzer, and Th-232, Co-60, C-14 and Cl-36 sources as specified in the lab manual \cite{labmanual}. Figure \ref{fig:block} shows the connections.
+
+\begin{table}[!htbp]
+    \centering
+    \resizebox{0.9\columnwidth}{!}{%
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Purpose} & \textbf{Manufacturer} & \textbf{Model} &\textbf{Serial Number} \\
+        \midrule
+        Oscilloscope & Agilent Technologies & DSO6052A & MY44007040\\
+        High Voltage Power Supply & Ortec & 556 & - \\
+        Amplifier & Ortec & 572A & 121 \\
+        Single-Channel Analyzer & Ortec & 551 & - \\
+        Counter/Timer & Ortec & 994 & 2108 \\
+        \bottomrule
+    \end{tabular}%
+    }
+    \caption{List of equipment used in Laboratory 4.}
+    \label{tab:equipment}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{block.png}
+    \caption{Block diagram of setup.}
+    \label{fig:block}
+\end{figure}
+
+\subsection{Experimental Procedure}
+
+We followed the lab manual \cite{labmanual} for all four measurements. The settings we had to find or choose are listed in Table \ref{tab:settings}.
+
+\textbf{Counting curve and pulse height vs.\ HV.} With a source on the tube, we raised the high voltage from 650 V to 910 V in 20 V steps. At each step we waited 30 s for the voltage to settle, counted for 3 s with the counter/timer, and read the pre-amplifier pulse height on the oscilloscope. The pulse height uncertainty is the half width of the band of pulses, and the baseline correction is already applied to the tabulated values.  We took 840 V, on the high side of the plateau, as the operating voltage. The noise LLD (0.1 V) was found at 800 V with the source removed.
+
+\textbf{Pulse height consistency.} At 840 V we recorded the pulse height spectra of Co-60, C-14 and Cl-36 with the MCA for 30 s real time each and took the centroid channel of the peak. We converted channels to volts with the calibration from our Lab 2 report \cite{lab2}.
+
+\textbf{Beta attenuation.} We placed Al absorbers of increasing mass thickness between the Co-60 source and the tube, and counted for 5 to 14 s at each thickness (longer for thicker absorbers). The zero-absorber row in Table \ref{tab:rawbeta} is a background count.
+
+\textbf{Dead time.} We measured the dead time and recovery time on the oscilloscope with the cursors on the persisting trace of the pulses, then used the two-source method with Th-232 and Cl-36. The sources sat on the 3rd shelf, about 3 cm from the tube and about 3 cm apart. A 1 mm change in position changes the rate noticeably, so the source that stays in place was never moved; only the other was inserted and removed. Each of the three runs has four 10 s counts: background, each source, and both together.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{ll}
+\toprule
+\textbf{Setting} & \textbf{Value} \\
+\midrule
+High voltage scan & 650 to 910 V, 20 V steps, 30 s settle, 3 s count \\
+Operating voltage & 840 V \\
+Noise LLD & 0.1 V (found at 800 V, source removed) \\
+SCA mode & integral \\
+Scope baseline correction & $-2.625$ mV \\
+Scope for dead time & 100 $\mu$s/div, Normal trigger, $\infty$ persist, trigger level $-78.2$ mV \\
+MCA spectra & 30 s real time \\
+Channel to voltage (Lab 2 \cite{lab2}) & $V = -36.0\ \text{mV} + (1.31\ \text{mV})\,n$, with $n$ the channel number \\
+Two-source counts & 10 s each, 3rd shelf, sources about 3 cm from the tube \\
+\bottomrule
+\end{tabular}
+\caption{Settings we found or chose for Laboratory 4.}
+\label{tab:settings}
+\end{table}
+
+
+\section{Data}
+
+\subsection{Counting curve and pulse height vs.\ high voltage}
+
+Table \ref{tab:rawcc} lists the raw counts and the pre-amplifier pulse heights with their uncertainties. Counts first appeared at 670 V (44 counts), but no pulse was visible on the scope, so we attributed them to noise. Pulses first showed up on the scope at 690 V. At 910 V the counts jumped to 267 and we stopped the scan.
+
+\begin{table}[!htbp]
+\centering\small\setlength{\tabcolsep}{3pt}
+\begin{tabular}{ccc|ccc}
+\toprule
+\textbf{HV (V)} & \textbf{Counts (3 s)} & \textbf{Pulse height (mV)} & \textbf{HV (V)} & \textbf{Counts (3 s)} & \textbf{Pulse height (mV)} \\
+\midrule
+650 & 0 & 0 $\pm$ 0 & 790 & 169 & 137.5 $\pm$ 28.75 \\
+670 & 44 & 0 $\pm$ 0 & 810 & 178 & 155.31 $\pm$ 29.06 \\
+690 & 119 & 18.75 $\pm$ 2.75 & 830 & 183 & 212.81 $\pm$ 19.06 \\
+710 & 152 & 31.125 $\pm$ 4.13 & 850 & 185 & 255 $\pm$ 21.25 \\
+730 & 163 & 47.88 $\pm$ 9.13 & 870 & 178 & 303.75 $\pm$ 35 \\
+750 & 164 & 70.5 $\pm$ 10.75 & 890 & 177 & 363.75 $\pm$ 52.5 \\
+770 & 169 & 97.63 $\pm$ 14.38 & 910 & 267 & 443.75 $\pm$ 56.25 \\
+\bottomrule
+\end{tabular}
+\caption{Counts and pre-amplifier pulse height $\pm$ half width versus high voltage.}
+\label{tab:rawcc}
+\end{table}
+
+\subsection{Pulse height consistency}
+
+Table \ref{tab:rawcons} gives the MCA centroid channel and gross counts for each source.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Source} & \textbf{Centroid channel} & \textbf{Gross counts} & \textbf{Real time (s)} \\
+\midrule
+Co-60 & 2906 & 4419 & 30 \\
+C-14 & 3374 & 1280 & 30 \\
+Cl-36 & 1939 & 13986 & 30 \\
+\bottomrule
+\end{tabular}
+\caption{MCA centroid channel and gross counts for each source at 840 V.}
+\label{tab:rawcons}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\fbox{\parbox{0.8\textwidth}{\centering\vspace{1.2cm}MCA spectra of Co-60, C-14 and Cl-36 (to be added)\vspace{1.2cm}}}
+\caption{MCA pulse height spectra of the three sources at 840 V, 30 s real time.}
+\label{fig:mca}
+\end{figure}
+
+\subsection{Beta attenuation}
+
+Table \ref{tab:rawbeta} lists the absorber thickness, counts and counting time. The thickness uncertainty is 10\% of the thickness \cite{labmanual}.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{ccc}
+\toprule
+\textbf{Mass thickness (mg/cm$^2$)} & \textbf{Counts} & \textbf{Time (s)} \\
+\midrule
+14.67 & 340 & 5 \\
+66.53 & 83 & 5 \\
+177.22 & 110 & 8 \\
+415.80 & 112 & 8 \\
+628.78 & 94 & 8 \\
+843.34 & 139 & 12 \\
+1278.61 & 84 & 14 \\
+1540.52 & 100 & 14 \\
+\bottomrule
+\end{tabular}
+\caption{Counts and counting time for each aluminum absorber with the Co-60 source. Background (no source) counts were 5 over 5 seconds.}
+\label{tab:rawbeta}
+\end{table}
+
+\subsection{Dead time}
+
+Figure \ref{fig:scope} shows the oscilloscope traces with the cursors placed as described in the manual \cite{labmanual}. The dead time runs from the initial pulse ($-2$ $\mu$s) to where pulses start to appear again (358 $\mu$s); the second measurement runs from there to where the pulses reach full height again (838 $\mu$s). The cursor step is 2 $\mu$s.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.36\textwidth]{E5_scope_dead_and_recovery_time.png}
+\caption{Oscilloscope traces with cursors: dead time (top, 360 $\mu$s) and recovery measurement (bottom, 480 $\mu$s).}
+\label{fig:scope}
+\end{figure}
+
+Table \ref{tab:rawtwo} has the two-source counts.
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{ccccc}
+\toprule
+\textbf{Run} & \textbf{Background} & \textbf{Th-232} & \textbf{Cl-36} & \textbf{Both} \\
+\midrule
+1 & 5 & 1174 & 446 & 1585 \\
+2 & 2 & 722 & 484 & 1163 \\
+3 & 1 & 1056 & 441 & 1412 \\
+\bottomrule
+\end{tabular}
+\caption{Two-source counts for each run (10 s per count).}
+\label{tab:rawtwo}
+\end{table}
+
+
+\section{Analysis of Data}
+
+Count uncertainties are Poisson, $\sigma_N = \sqrt{N}$, propagated with Knoll Eq.\ 3.37 \cite{knoll}. A rate from $N$ counts in time $t$ is $r = N/t$ with $\sigma_r = \sqrt{N}/t$ (Knoll, Eqs.\ 3.39--3.40).
+
+\subsection{Counting curve and pulse height vs.\ high voltage}
+
+\textbf{Count rates.} Each rate is $r = N/t$ with $\sigma_r = \sqrt{N}/t$. All rates are in Table \ref{tab:rate} and Figure \ref{fig:cc}b. The rates at the two voltages around the 840 V operating point are $61.0 \pm 4.5$ s$^{-1}$ (830 V) and $61.7 \pm 4.5$ s$^{-1}$ (850 V).
+
+\begin{samplecalc}{Sample calculation: count rate at 830 V ($N = 183$, $t = 3$ s)}
+\begin{align*}
+r &= N/t = 183/(3\ \text{s}) = 61.0\ \text{s}^{-1}, &
+\sigma_r &= \sqrt{N}/t = \sqrt{183}/(3\ \text{s}) = 4.5\ \text{s}^{-1}
+\end{align*}
+\end{samplecalc}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{cc|cc}
+\toprule
+\textbf{HV (V)} & \textbf{Rate (s$^{-1}$)} & \textbf{HV (V)} & \textbf{Rate (s$^{-1}$)} \\
+\midrule
+650 & 0.0 $\pm$ 0.0 & 790 & 56.3 $\pm$ 4.3 \\
+670 & 14.7 $\pm$ 2.2 & 810 & 59.3 $\pm$ 4.4 \\
+690 & 39.7 $\pm$ 3.6 & 830 & 61.0 $\pm$ 4.5 \\
+710 & 50.7 $\pm$ 4.1 & 850 & 61.7 $\pm$ 4.5 \\
+730 & 54.3 $\pm$ 4.3 & 870 & 59.3 $\pm$ 4.4 \\
+750 & 54.7 $\pm$ 4.3 & 890 & 59.0 $\pm$ 4.4 \\
+770 & 56.3 $\pm$ 4.3 & 910 & 89.0 $\pm$ 5.4 \\
+\bottomrule
+\end{tabular}
+\caption{Count rate $r = N/3$ s versus high voltage.}
+\label{tab:rate}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}{0.44\textwidth}
+\includegraphics[width=\textwidth]{A_pulse_height_vs_hv.png}
+\caption{Pulse height}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.44\textwidth}
+\includegraphics[width=\textwidth]{B_counting_curve.png}
+\caption{Counting curve}
+\end{subfigure}
+\caption{Pulse height (a) and count rate (b) versus high voltage. Dashed line: 840 V operating voltage. Error bars are the half width of the pulse band in (a) and $\sqrt{N}/t$ in (b).}
+\label{fig:cc}
+\end{figure}
+
+\textbf{Plateau slope.} Knoll quotes the plateau slope in percent per 100 V (p.\ 215) \cite{knoll}. We take the plateau as 730--890 V and compare the mean rate of the three lowest points (730, 750, 770 V) with that of the three highest (850, 870, 890 V). A group rate is the summed counts over the summed time, with $\sigma = \sqrt{\sum N}/\sum t$ (Knoll, Eq.\ 3.42). Then
+\begin{equation}
+ s = \frac{r_2 - r_1}{V_2 - V_1}, \qquad
+ \sigma_s = \frac{\sqrt{\sigma_{r_1}^2 + \sigma_{r_2}^2}}{V_2 - V_1}, \qquad
+ s_{\%} = 100\,\frac{s\,(100\ \text{V})}{r_1},
+\end{equation}
+using Knoll Eq.\ 3.38 for $\sigma_s$ and the rate at the start of the plateau, $r_1$, as the reference rate.
+
+\begin{samplecalc}{Sample calculation: plateau slope}
+Group rates at $V_1 = 750$ V and $V_2 = 870$ V:
+\begin{align*}
+r_1 &= 496/(9\ \text{s}) = 55.1\ \text{s}^{-1}, &
+\sigma_{r_1} &= \sqrt{496}/(9\ \text{s}) = 2.5\ \text{s}^{-1}\\
+r_2 &= 540/(9\ \text{s}) = 60.0\ \text{s}^{-1}, &
+\sigma_{r_2} &= \sqrt{540}/(9\ \text{s}) = 2.6\ \text{s}^{-1}
+\end{align*}
+\begin{align*}
+s &= \frac{r_2 - r_1}{V_2 - V_1} = \frac{60.0 - 55.1}{120\ \text{V}} = 0.041\ \text{s}^{-1}\text{V}^{-1}\\
+\sigma_s &= \frac{\sqrt{\sigma_{r_1}^2 + \sigma_{r_2}^2}}{V_2 - V_1} = \frac{\sqrt{2.5^2 + 2.6^2}}{120\ \text{V}} = 0.030\ \text{s}^{-1}\text{V}^{-1}\\
+s_{\%} &= 100\,\frac{s\,(100\ \text{V})}{r_1} = 100\,\frac{(0.041)(100)}{55.1} = 7.4\ \%\ \text{per 100 V}\\
+\sigma_{s_{\%}} &= 100\,\frac{\sigma_s\,(100\ \text{V})}{r_1} = 100\,\frac{(0.030)(100)}{55.1} = 5.4\ \%\ \text{per 100 V}
+\end{align*}
+\end{samplecalc}
+
+\subsection{Pulse height consistency}
+
+The Lab 2 calibration is channel $= 765.8\ \text{V} + 27.6$ \cite{lab2}, which we use as $V = -36.0\ \text{mV} + (1.31\ \text{mV})\,n$, with the Lab 2 oscilloscope amplitude uncertainty of 25.4 mV \cite{lab2}. The rate is $r = N/30$ s with $\sigma_r = \sqrt{N}/30$ s. Results are in Table \ref{tab:cons} and Figure \ref{fig:cons}.
+
+\begin{samplecalc}{Sample calculation: Co-60 amplitude and rate ($n = 2906$, $N = 4419$)}
+\begin{align*}
+V &= -36.0\ \text{mV} + (1.31\ \text{mV})(2906) = 3.77\ \text{V}, &
+\sigma_V &= 25.4\ \text{mV} = 0.03\ \text{V}\\
+r &= N/t = 4419/(30\ \text{s}) = 147.3\ \text{s}^{-1}, &
+\sigma_r &= \sqrt{4419}/(30\ \text{s}) = 2.2\ \text{s}^{-1}
+\end{align*}
+\end{samplecalc}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Source} & \textbf{Amplitude (V)} & \textbf{Rate (s$^{-1}$)} \\
+\midrule
+Co-60 & 3.77 $\pm$ 0.03 & 147 $\pm$ 2 \\
+C-14 & 4.38 $\pm$ 0.03 & 43 $\pm$ 1 \\
+Cl-36 & 2.50 $\pm$ 0.03 & 466 $\pm$ 4 \\
+\bottomrule
+\end{tabular}
+\caption{Pulse amplitude (MCA centroid) and count rate at 840 V.}
+\label{tab:cons}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{C_pulse_height_consistency.png}
+\caption{Pulse amplitude from the MCA centroid and count rate for each source.}
+\label{fig:cons}
+\end{figure}
+
+\subsection{Beta attenuation}
+
+The net rate is the gross rate minus the background rate (Knoll, Eqs.\ 3.52--3.53) \cite{knoll},
+\begin{equation}
+ r = \frac{G}{t_g} - \frac{B}{t_b}, \qquad \sigma_r = \sqrt{\frac{G}{t_g^2} + \frac{B}{t_b^2}},
+\end{equation}
+with $G$, $t_g$ the gross counts and time and $B$, $t_b$ the background counts and time. The uncertainty of the logarithm is $\sigma_{\ln r} = \sigma_r/r$ (Knoll, Eq.\ 3.37). The thickness uncertainty is 10\% of the thickness \cite{labmanual}. Table \ref{tab:netbeta} and Figure \ref{fig:beta} show the results.
+
+\begin{samplecalc}{Sample calculation: net rate and $\ln r$ at 14.67 mg/cm$^2$}
+\begin{align*}
+B/t_b &= 5/(5\ \text{s}) = 1.0\ \text{s}^{-1}, &
+\sigma &= \sqrt{5}/(5\ \text{s}) = 0.45\ \text{s}^{-1}\\
+G/t_g &= 340/(5\ \text{s}) = 68.0\ \text{s}^{-1}, &
+\sigma &= \sqrt{340}/(5\ \text{s}) = 3.7\ \text{s}^{-1}\\
+r &= 68.0 - 1.0 = 67.0\ \text{s}^{-1}, &
+\sigma_r &= \sqrt{340/5^2 + 5/5^2} = 3.7\ \text{s}^{-1}\\
+\ln r &= \ln 67.0 = 4.20, &
+\sigma_{\ln r} &= \sigma_r/r = 3.7/67.0 = 0.055
+\end{align*}
+\end{samplecalc}
+
+\begin{table}[!htbp]
+\centering\small
+\begin{tabular}{cccc}
+\toprule
+\textbf{Thickness (mg/cm$^2$)} & \textbf{Gross rate (s$^{-1}$)} & \textbf{Net rate (s$^{-1}$)} & \textbf{$\ln r$} \\
+\midrule
+14.7 & 68.00 $\pm$ 3.69 & 67.0 $\pm$ 3.7 & 4.20 $\pm$ 0.06 \\
+66.5 & 16.60 $\pm$ 1.82 & 15.6 $\pm$ 1.9 & 2.75 $\pm$ 0.12 \\
+177.2 & 13.75 $\pm$ 1.31 & 12.8 $\pm$ 1.4 & 2.55 $\pm$ 0.11 \\
+415.8 & 14.00 $\pm$ 1.32 & 13.0 $\pm$ 1.4 & 2.56 $\pm$ 0.11 \\
+628.8 & 11.75 $\pm$ 1.21 & 10.8 $\pm$ 1.3 & 2.37 $\pm$ 0.12 \\
+843.3 & 11.58 $\pm$ 0.98 & 10.6 $\pm$ 1.1 & 2.36 $\pm$ 0.10 \\
+1278.6 & 6.00 $\pm$ 0.65 & 5.0 $\pm$ 0.8 & 1.61 $\pm$ 0.16 \\
+1540.5 & 7.14 $\pm$ 0.71 & 6.1 $\pm$ 0.8 & 1.82 $\pm$ 0.14 \\
+\bottomrule
+\end{tabular}
+\caption{Gross rate, net rate and $\ln r$ for each absorber.}
+\label{tab:netbeta}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.62\textwidth]{D_beta_attenuation_ln.png}
+\caption{Natural log of the net count rate versus Al mass thickness. Dash-dot line: through points 1 and 2; dashed line: fit to points 2--8; black dashed line: expected $n$.}
+\label{fig:beta}
+\end{figure}
+
+The beta count rate falls approximately as $I/I_0 = e^{-nt}$ with $t$ the mass thickness (Knoll, Eq.\ 2.14, p.\ 45) \cite{knoll}. We take $n$ from the first two points:
+\begin{equation}
+ n = \frac{\ln(r_1/r_2)}{t_2 - t_1}.
+\end{equation}
+The error follows from Knoll Eq.\ 3.37 with $\sigma_{r_1}$, $\sigma_{r_2}$ and the 10\% thickness uncertainties as independent inputs. The result is $n = 28.1 \pm 4.5$ cm$^2$/g.
+
+\begin{samplecalc}{Sample calculation: absorption coefficient from the first two points}
+From Table \ref{tab:netbeta}: $r_1 = 67.0 \pm 3.7$ s$^{-1}$ at $t_1 = 14.67$ mg/cm$^2$ and $r_2 = 15.6 \pm 1.9$ s$^{-1}$ at $t_2 = 66.53$ mg/cm$^2$.
+\begin{align*}
+L &= \ln(r_1/r_2) = \ln(67.0/15.6) = 1.457, &
+\sigma_L &= \sqrt{(3.7/67.0)^2 + (1.9/15.6)^2} = 0.13\\
+\Delta t &= t_2 - t_1 = 0.05186\ \text{g/cm}^2, &
+\sigma_{\Delta t} &= 0.10\sqrt{14.67^2 + 66.53^2} = 0.0068\ \text{g/cm}^2\\
+n &= L/\Delta t = 1.457/0.05186 = 28.1\ \text{cm}^2/\text{g}
+\end{align*}
+\begin{align*}
+\sigma_n &= \sqrt{\left(\frac{\sigma_L}{\Delta t}\right)^2 + \left(\frac{n\,\sigma_{\Delta t}}{\Delta t}\right)^2}
+ = \sqrt{(2.6)^2 + (3.7)^2} = 4.5\ \text{cm}^2/\text{g}
+\end{align*}
+\end{samplecalc}
+
+We read the expected value for the Co-60 beta from Knoll Fig.\ 2.16 \cite{knoll}: $n_{\text{exp}} \approx 105 \pm 10$ cm$^2$/g at the marked Co-60 endpoint energy ($\approx 0.32$ MeV). For the endpoint energy from our $n$ we inverted the line of Fig.\ 2.16, approximated by $E = 1.47\,(n/10)^{-0.668}$ MeV (our own reading of the log-log figure, not an equation from Knoll). This gives $E_{\max} = 0.74 \pm 0.08$ MeV (error from $\sigma_n$ only).
+
+\begin{samplecalc}{Sample calculation: endpoint energy}
+\begin{align*}
+E_{\max} &= 1.47\,(n/10)^{-0.668} = 1.47\,(28.1/10)^{-0.668} = 0.74\ \text{MeV}\\
+\sigma_E &= 0.668\,E_{\max}\,\sigma_n/n = 0.668\,(0.74)\,(4.5/28.1) = 0.08\ \text{MeV}
+\end{align*}
+\end{samplecalc}
+
+\subsection{Dead time}
+
+\textbf{Oscilloscope.} The cursors in Figure \ref{fig:scope} give a dead time of $360 \pm 3$ $\mu$s, an interval from the end of the dead time to full pulse height of $480 \pm 3$ $\mu$s, and a recovery time measured from the initial pulse of $840 \pm 3$ $\mu$s. The uncertainty of each is one cursor step (2 $\mu$s) on each cursor, added in quadrature.
+
+\begin{samplecalc}{Sample calculation: oscilloscope times (cursors at $-2$, 358 and 838 $\mu$s)}
+\begin{align*}
+\text{dead time} &= 358 - (-2) = 360\ \mu\text{s}, &
+\text{interval} &= 838 - 358 = 480\ \mu\text{s}\\
+\text{recovery time} &= 838 - (-2) = 840\ \mu\text{s}, &
+\sigma &= \sqrt{2^2 + 2^2} = 2.8 \approx 3\ \mu\text{s}
+\end{align*}
+\end{samplecalc}
+
+\textbf{Two-source method.} With background rate $m_b$, source rates $m_1$ (Th-232) and $m_2$ (Cl-36) and combined rate $m_{12}$, each the 10 s count divided by 10 s, the dead time of a non-paralyzable system is (Knoll, Eqs.\ 4.30--4.32) \cite{knoll}
+\begin{align}
+ X &= m_1 m_2 - m_b m_{12}, \qquad
+ Y = m_1 m_2 (m_{12} + m_b) - m_b m_{12}(m_1 + m_2),\\
+ Z &= \frac{Y\,(m_1 + m_2 - m_{12} - m_b)}{X^2}, \qquad
+ \tau = \frac{X\left(1 - \sqrt{1 - Z}\right)}{Y}.
+\end{align}
+The uncertainty of $\tau$ is propagated with Knoll Eq.\ 3.37 from $\sigma_N = \sqrt{N}$ on the four counts. We report the mean of the three runs and its standard error $s/\sqrt{3}$, with $s$ the sample standard deviation (Knoll, Eqs.\ 3.5, 3.9 and 3.37). Table \ref{tab:tau} and Figure \ref{fig:tau} compare the runs with the oscilloscope dead time.
+
+\begin{samplecalc}{Sample calculation: two-source dead time, run 1}
+\begin{align*}
+m_b &= 5/(10\ \text{s}) = 0.5\ \text{s}^{-1}, & m_1 &= 1174/(10\ \text{s}) = 117.4\ \text{s}^{-1}\\
+m_2 &= 446/(10\ \text{s}) = 44.6\ \text{s}^{-1}, & m_{12} &= 1585/(10\ \text{s}) = 158.5\ \text{s}^{-1}
+\end{align*}
+\begin{align*}
+X &= (117.4)(44.6) - (0.5)(158.5) = 5157\ \text{s}^{-2}\\
+Y &= (117.4)(44.6)(158.5 + 0.5) - (0.5)(158.5)(117.4 + 44.6) = 8.20\times10^{5}\ \text{s}^{-3}\\
+Z &= \frac{(8.20\times10^{5})(117.4 + 44.6 - 158.5 - 0.5)}{(5157)^2} = 0.0925\\
+\tau &= \frac{5157\left(1 - \sqrt{1 - 0.0925}\right)}{8.20\times10^{5}} = 298\ \mu\text{s}\\
+\sigma_\tau &= \sqrt{\textstyle\sum_i (\partial\tau/\partial m_i\,\sigma_{m_i})^2} = 566\ \mu\text{s}
+\end{align*}
+with $\sigma_{m_i} = \sqrt{N_i}/(10\ \text{s}) = 0.22$, 3.4, 2.1 and 4.0 s$^{-1}$ for $m_b$, $m_1$, $m_2$, $m_{12}$. Mean of the three runs:
+\begin{align*}
+\bar\tau &= (298 + 612 + 971)/3 = 627\ \mu\text{s}, &
+s &= \sqrt{\textstyle\sum_i (\tau_i - \bar\tau)^2/(3 - 1)} = 337\ \mu\text{s}\\
+\sigma_{\bar\tau} &= s/\sqrt{3} = 337/\sqrt{3} = 195\ \mu\text{s}
+\end{align*}
+\end{samplecalc}
+
+\begin{figure}[!htbp]
+\centering
+\begin{minipage}[c]{0.40\textwidth}\centering\small
+\begin{tabular}{cc}
+\toprule
+\textbf{Run} & \textbf{$\tau$ ($\mu$s)} \\
+\midrule
+1 & 298 $\pm$ 566 \\
+2 & 612 $\pm$ 729 \\
+3 & 971 $\pm$ 634 \\
+Mean $\pm$ SEM & 627 $\pm$ 195 \\
+\bottomrule
+\end{tabular}
+\captionof{table}{Two-source dead time per run; SEM is the standard error of the mean.}
+\label{tab:tau}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\textwidth}\centering
+\includegraphics[width=\textwidth]{E1_tau_per_run.png}
+\captionof{figure}{Two-source dead time per run, mean $\pm$ SEM, and the scope dead and recovery times.}
+\label{fig:tau}
+\end{minipage}
+\end{figure}
+
+
+
+\section{Conclusions}
+
+This laboratory successfully demonstrated most of the operations of the laboratory's SCA and MCA while familiarizing us with its use. The single-channel analyzer behaved as expected in all three operating modes: the integrator-mode LLD tracked the input pulse amplitude linearly (Figure \ref{fig:integrator}), and both the window- and normal-mode discriminated ranges tracked their respective window-size and upper-level settings linearly while holding $V_{min}$ fixed at the LLD (Figures \ref{fig:window} and \ref{fig:normal}), confirming the SCA's function as an adjustable bandpass pulse-height discriminator. The multichannel analyzer showed the expected linear relationship between input pulse amplitude and output channel number for most of the runs recorded, aside from the one outlier. With only one twin-pulse dead-time measurement, the type of ADC in our MCA cannot be determined.
+
+Future work for this laboratory would be to collect additional dead-time measurements to determine the type of ADC in our MCA. In addition, in future laboratories, we will record more raw measurements to supplement the calculated values for a more structured and comprehensive report, rather than relying solely on scope tools (e.g. including baseline and peak values for the amplitude calculation).
+
+\bibliography{references}
+
+\end{document}
