@@ -18,7 +18,7 @@ Write `lab_5_plots.py` in `NERS-515-Lab/lab_5/` that makes the figures and numbe
 - `Lab 5 - 2. Counting Curve - Alpha.csv`: Am-241, LLD channel 1738. Columns: voltage, gross counts above LLD, peak centroid, rate. Rate column = counts/30 s, so `T_ALPHA = 30.0`.
 - `Lab 5 - 2. Counting Curve - Beta.csv`: Cl-36, LLD channel 307, 30 s per point (`T_BETA = 30.0`).
 - `Lab 5 - 3. Counting Efficiency.csv`: Cl-36, 1,428,191 counts in 60 s; "count rate (uC)" 0.6433 is the rate divided by 3.7×10⁴; "Original" 1.032 µCi; date Aug 1 2026. Messy layout, parse by hand.
-- `Lab 5 - 4. Gamma Response, .csv`: LLD channel 229, voltage vs gross counts, 30 s per point (`T_GAMMA = 30.0`).
+- `Lab 5 - 4. Gamma Response, .csv`: LLD channel 229, voltage vs gross counts, 30 s per point (`T_GAMMA = 30.0`), Co-60 turned upside down. All count times are Maestro live time; no background was taken.
 - No .SPE spectra were saved, so there is no spectrum figure (see F4).
 
 ## Figures (in report order)
@@ -31,14 +31,13 @@ Write `lab_5_plots.py` in `NERS-515-Lab/lab_5/` that makes the figures and numbe
 
 **F4. Calibrated alpha spectrum: skipped** (no .SPE saved). Print the one-point calibration factor from the 3 µs shaping-time run: k = 5.486 MeV / 2367.29 = 2.317 keV/channel (Knoll Table 1.3, p. 8, main Am-241 group), through the origin, with σ_k from σ_c ≤ 1 channel (Eq. 3.37). Valid only at 800 V, gain 50 (coarse 100 × fine 0.5; fine-dial reading possibly 6.00, see the report prompt), 3 µs shaping.
 
-**F5. Beta and gamma counting curves** (2.3.2 and 4). One figure, two series (Cl-36 beta, LLD 307; gamma, LLD 229) with distinct markers, rate vs voltage, √N/t error bars. Nothing else on it. If the two curves are hard to read together, make two separate figures (F5, F6) and tell me.
+**F5. Beta and gamma counting curves** (2.3.2 and 4). Print one plateau slope per curve in % per 100 V with σ (alpha 900-1000 V, beta 1500-1550 V, gamma 1500-1600 V; checks 8.4 ± 0.2, 8.5 ± 0.4, 0.1 ± 0.6). One figure, two series (Cl-36 beta, LLD 307; Co-60 gamma, LLD 229) with distinct markers, rate vs voltage, √N/t error bars. Nothing else on it. If the two curves are hard to read together, make two separate figures (F5, F6) and tell me.
 
 **Efficiency (3): table only, no figure.** Compute rate r = N/t ± √N/t; marked activity in Bq (1 µCi = 3.7×10⁴ Bq, Knoll p. 2: 1 Ci = 3.7×10¹⁰ s⁻¹); decay correction A(t) = A₀ e^(−λt), λ = ln2/T½, T½(Cl-36) = 3.08×10⁵ y (Knoll Eq. 1.1 p. 2, Table 1.1 p. 4); ε_abs = r/A(t); ε_int = ε_abs × 4π/Ω with Ω = 2π (Knoll pp. 118-119, p. 166). Run settings: Cl-36 (marked 1.032 µCi on Aug 1 2026), 1500 V (chosen from the beta plateau), LLD 307 and the same gain as the beta curve, 60 s. Propagate counting uncertainty (Eq. 3.37); the marked activity has no stated uncertainty, so ask me. Check: ε_abs ≈ 0.623, above the 2π maximum of 0.5; ε_int ≈ 1.25. Flag this in the printout. Also print the beta-curve rates at 1500 and 1550 V next to the efficiency-run rate for comparison.
 
 ## Flag to me (do not work around)
 
 - Alpha centroids at the LLD for 500-850 V; the 1050 V drop.
-- Gamma source (Co-60 or Cs-137) for the legend.
 - The efficiency-run rate is about 7 % above the beta-curve rate at the same 1500 V and LLD.
 - Efficiency above the 2π limit.
 

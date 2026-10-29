@@ -54,7 +54,7 @@ ALPHA_DROP_V = 1050              # V, drawn hollow, excluded from the plateau
 AMPLITUDE_POINTS = [900, 1000]   # V, filled points in F3 (peak clearly above the LLD)
 AMPLITUDE_LOW = list(range(500, 851))                # V range of the LLD-limited centroids
 SHOW_LOW_AMPLITUDE = False       # False: leave 500-850 V out of F3; True: faint hollow (ASK)
-GAMMA_SOURCE = "gamma"           # legend label; Co-60 or Cs-137? (ASK)
+GAMMA_SOURCE = "Co-60 gamma"     # legend label
 A0_REL_UNC = 0.0                 # relative uncertainty of the marked activity (none stated: ASK)
 MEAS_DATE = None                 # date of the efficiency run; None = no decay (not recorded: ASK)
 F5_LOG_Y = True                  # beta and gamma together on a log rate axis
@@ -63,7 +63,7 @@ F5_LOG_Y = True                  # beta and gamma together on a log rate axis
 SURFACE, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e3e2de"
 BLUE, ORANGE, GRAY = "#2a78d6", "#eb6834", "#8a8984"
 GREEN, PURPLE, BLACK = "#009E73", "#CC79A7", "#000000"   # Okabe-Ito additions (colorblind safe)
-FONT = 9
+FONT = 11
 W_HALF, W_FULL = 3.5, 7.0       # inches; half-page and full-page figure widths
 plt.rcParams.update({
     "figure.facecolor": SURFACE, "axes.facecolor": SURFACE,
@@ -100,6 +100,21 @@ def save(fig, name):
     FIG_DIR.mkdir(exist_ok=True)
     fig.savefig(FIG_DIR / f"{name}.png", dpi=200)
     fig.savefig(FIG_DIR / f"{name}.pdf")
+
+
+# MCA channel -> pulse amplitude, Lab 2 calibration: channel = 765.8 V + 27.6 (our Lab 2 report)
+CAL_SLOPE, CAL_INT = 765.8, 27.6
+
+
+def volt_axis(ax, log=False):
+    """Right-hand axis: MCA channel converted to amplitude (V) with the Lab 2 calibration."""
+    sec = ax.secondary_yaxis("right", functions=(lambda c: (np.asarray(c) - CAL_INT) / CAL_SLOPE,
+                                                 lambda v: CAL_SLOPE * np.asarray(v) + CAL_INT))
+    sec.set_ylabel("amplitude (V)")
+    if log:
+        sec.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:g}"))
+        sec.yaxis.set_minor_formatter(plt.FuncFormatter(lambda v, _: f"{v:.1f}"))
+    return sec
 
 
 def rates(counts, t):
@@ -178,8 +193,9 @@ def plot_shaping(d, a10):
     sigma = FWHM/2.35, Knoll p. 728), dashed line at the chosen 3 us. Prints the ballistic deficit
     BD = (C10 - C)/C10 x 100 % (Knoll p. 649, Fig. 17.22) with Eq. 3.37 propagation."""
     print("\n--- F1. Centroid vs shaping time ---")
-    print(f"10 us peak area blank: estimated by {AREA_10US_METHOD} = {a10:.4g} (ESTIMATED)")
-    R("10 us peak area (estimated)", a10, None, "counts", AREA_10US_METHOD)
+    if d["area_est"].any():
+        print(f"10 us peak area blank: estimated by {AREA_10US_METHOD} = {a10:.4g} (ESTIMATED)")
+        R("10 us peak area (estimated)", a10, None, "counts", AREA_10US_METHOD)
     # sigma_c = FWHM / (2.35 sqrt(A)) < 1 channel for any FWHM below 2.35 sqrt(A)
     d["fwhm_max"] = 2.35 * np.sqrt(d["area"])
     print(f"sigma_c = FWHM/(2.35 sqrt(A)) (Knoll p. 728); sigma_c < 1 ch whenever FWHM < 2.35 sqrt(A):")
@@ -210,8 +226,9 @@ def plot_shaping(d, a10):
     ax.minorticks_off()
     ax.set_xlabel("shaping time ($\\mu$s)")
     ax.set_ylabel("peak centroid (channel)")
+    volt_axis(ax)
     title(ax, "Centroid vs shaping time")
-    leg(ax, "upper left")
+    leg(ax, "lower right")
     fig.tight_layout()
     save(fig, "F1_centroid_vs_shaping_time")
     return d
@@ -222,7 +239,7 @@ def plot_shaping(d, a10):
 # =========================================================================
 def plot_alpha_counting(d):
     """F2. Am-241 count rate vs voltage, r = N/30 s, sigma_r = sqrt(N)/30 s (Eq. 3.40).
-    1050 V hollow (drop, excluded from the plateau); dashed line at PLATEAU_START.
+    All points share one marker (1050 V is still excluded from the plateau); dashed line at PLATEAU_START.
     Written in linear and log y versions."""
     print(f"\n--- F2. Alpha counting curve (LLD {LLD_ALPHA}, {T_ALPHA:g} s/point) ---")
     print(f"settings: PLATEAU_START = {PLATEAU_START} V, ALPHA_DROP_V = {ALPHA_DROP_V} V (hollow, excluded)")
@@ -238,15 +255,11 @@ def plot_alpha_counting(d):
         R(f"alpha rate at {v} V", r.rate, r.srate, "counts/s", "N/30 s, sqrt(N)/30 s (Eq. 3.40)")
     print("300 V has N = 0 (rate 0, no error bar); it cannot be drawn on the log axis.")
 
-    main = d[d["hv"] != ALPHA_DROP_V]
-    dr = d[d["hv"] == ALPHA_DROP_V]
     for logy in (False, True):
         fig, ax = plt.subplots(figsize=(W_HALF, 2.8))
-        m = main[main["counts"] > 0] if logy else main
+        m = d[d["counts"] > 0] if logy else d
         ax.errorbar(m["hv"], m["rate"], yerr=m["srate"], fmt="o", color=BLUE, capsize=2, mec=SURFACE,
                     label="count rate")
-        ax.errorbar(dr["hv"], dr["rate"], yerr=dr["srate"], fmt="o", color=BLUE, mfc=SURFACE, capsize=2,
-                    label=f"{ALPHA_DROP_V} V (excluded)")
         ax.axvline(PLATEAU_START, color=PURPLE, ls="--", label=f"{PLATEAU_START} V")
         if logy:
             ax.set_yscale("log")
@@ -275,36 +288,35 @@ def two_point_slope(r1, r2):
 
 def plot_alpha_amplitude(d, show_low=SHOW_LOW_AMPLITUDE, name="F3_alpha_amplitude_vs_voltage"):
     """F3. Alpha peak centroid vs voltage on a log y axis (compare Knoll Fig. 6.11 / Eq. 6.10,
-    ln M ~ linear in V). Filled: AMPLITUDE_POINTS; hollow: the 1050 V drop; optional faint hollow:
-    LLD-limited 500-850 V. Error bars +/- SIGMA_CENTROID. No fit line."""
+    ln M ~ linear in V). Filled: AMPLITUDE_POINTS and the 1050 V drop; hollow: LLD-limited
+    500-850 V if show_low. Error bars +/- SIGMA_CENTROID. No fit line."""
     good = d[d["hv"].isin(AMPLITUDE_POINTS)]
     dr = d[d["hv"] == ALPHA_DROP_V]
     low = d[d["hv"].isin(AMPLITUDE_LOW) & (d["c"] > 0)]
-    if name == "F3_alpha_amplitude_vs_voltage":
-        print("\n--- F3. Alpha pulse amplitude vs voltage ---")
-        print(f"settings: AMPLITUDE_POINTS = {AMPLITUDE_POINTS}, SHOW_LOW_AMPLITUDE = {SHOW_LOW_AMPLITUDE}")
-        print(f"FLAG: centroids at 500-850 V are {low['c'].min():.0f}-{low['c'].max():.0f} ch, at or just above "
-              f"the LLD ({LLD_ALPHA}); probably the LLD edge, not the alpha peak.")
-        r900, r1000, r1050 = (d[d["hv"] == v].iloc[0] for v in (900, 1000, ALPHA_DROP_V))
-        for a, b in ((r900, r1000), (r1000, r1050)):
-            s, ss = two_point_slope(a, b)
-            print(f"  d ln(centroid)/dV, {a.hv:.0f}-{b.hv:.0f} V: {s:.5f} +/- {ss:.1e} /V "
-                  f"(centroid x{np.exp(s*100):.3f} per 100 V)")
-            R(f"d ln(centroid)/dV {a.hv:.0f}-{b.hv:.0f} V", s, ss, "1/V", "two-point slope; Eq. 3.37, sigma_c=1 ch; Knoll Eq. 6.10")
+    print("\n--- F3. Alpha pulse amplitude vs voltage ---")
+    print(f"settings: AMPLITUDE_POINTS = {AMPLITUDE_POINTS}, SHOW_LOW_AMPLITUDE = {SHOW_LOW_AMPLITUDE}")
+    print(f"FLAG: centroids at 500-850 V are {low['c'].min():.0f}-{low['c'].max():.0f} ch, at or just above "
+          f"the LLD ({LLD_ALPHA}); probably the LLD edge, not the alpha peak.")
+    r900, r1000, r1050 = (d[d["hv"] == v].iloc[0] for v in (900, 1000, ALPHA_DROP_V))
+    for a, b in ((r900, r1000), (r1000, r1050)):
+        s, ss = two_point_slope(a, b)
+        print(f"  d ln(centroid)/dV, {a.hv:.0f}-{b.hv:.0f} V: {s:.5f} +/- {ss:.1e} /V "
+              f"(centroid x{np.exp(s*100):.3f} per 100 V)")
+        R(f"d ln(centroid)/dV {a.hv:.0f}-{b.hv:.0f} V", s, ss, "1/V", "two-point slope; Eq. 3.37, sigma_c=1 ch; Knoll Eq. 6.10")
 
     fig, ax = plt.subplots(figsize=(W_HALF, 2.8))
     if show_low:
-        ax.errorbar(low["hv"], low["c"], yerr=SIGMA_CENTROID, fmt="s", color=GRAY, mfc=SURFACE, alpha=0.6,
-                    capsize=2, label="at LLD (500-850 V)")
-    ax.errorbar(good["hv"], good["c"], yerr=SIGMA_CENTROID, fmt="o", color=BLUE, capsize=2, mec=SURFACE,
+        ax.errorbar(low["hv"], low["c"], yerr=SIGMA_CENTROID, fmt="o", color=BLUE, mfc=SURFACE, capsize=2,
+                    label="at LLD")
+    pts = pd.concat([good, dr])
+    ax.errorbar(pts["hv"], pts["c"], yerr=SIGMA_CENTROID, fmt="o", color=BLUE, capsize=2, mec=SURFACE,
                 label="peak centroid")
-    ax.errorbar(dr["hv"], dr["c"], yerr=SIGMA_CENTROID, fmt="o", color=BLUE, mfc=SURFACE, capsize=2,
-                label=f"{ALPHA_DROP_V} V")
     ax.set_yscale("log")
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}"))
     ax.yaxis.set_minor_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}"))
     ax.set_xlabel("applied voltage (V)")
     ax.set_ylabel("peak centroid (channel)")
+    volt_axis(ax, log=True)
     if not show_low:
         ax.set_xlim(870, 1080)
     title(ax, "Alpha pulse amplitude vs voltage")
@@ -496,6 +508,40 @@ def write_summary():
     print("\n".join(lines))
 
 
+# =========================================================================
+# F6. Differential counting curves (slope of the counting curve)
+# =========================================================================
+def differential(d, exclude=()):
+    """dr/dV between neighbouring points: (r2 - r1)/(V2 - V1) at the midpoint voltage.
+    The counting curve mirrors the integral pulse height distribution, so its slope maps the
+    differential distribution (Knoll pp. 113-115, Fig. 4.3). sigma from Eq. 3.37:
+    sqrt(s1^2 + s2^2)/(V2 - V1)."""
+    d = d[~d["hv"].isin(exclude)].sort_values("hv").reset_index(drop=True)
+    v1, v2 = d["hv"].values[:-1], d["hv"].values[1:]
+    r1, r2 = d["rate"].values[:-1], d["rate"].values[1:]
+    s1, s2 = d["srate"].values[:-1], d["srate"].values[1:]
+    dv = v2 - v1
+    return pd.DataFrame({"vmid": (v1 + v2) / 2, "v1": v1, "v2": v2,
+                         "drdv": (r2 - r1) / dv, "sdrdv": np.sqrt(s1**2 + s2**2) / dv})
+
+
+def plot_differential(d, name, label, color, marker, exclude=()):
+    """F6. Differential counting curve dr/dV vs midpoint voltage, error bars from Eq. 3.37."""
+    dd = differential(d, exclude)
+    print(f"\n--- {name}: differential counting curve ({label}) ---")
+    print(dd.round(3).to_string(index=False))
+    fig, ax = plt.subplots(figsize=(W_HALF, 2.8))
+    ax.errorbar(dd["vmid"], dd["drdv"], yerr=dd["sdrdv"], fmt=marker + "-", color=color, capsize=2,
+                mec=SURFACE, lw=1.0, label=label)
+    ax.axhline(0, color=GRAY, lw=0.8)
+    ax.set_xlabel("applied voltage (V)")
+    ax.set_ylabel("d$r$/d$V$ (s$^{-1}$ V$^{-1}$)")
+    leg(ax, "upper left")
+    fig.tight_layout()
+    save(fig, name)
+    return dd
+
+
 if __name__ == "__main__":
     print("settings:", dict(SIGMA_CENTROID=SIGMA_CENTROID, AREA_10US_METHOD=AREA_10US_METHOD,
                             PLATEAU_START=PLATEAU_START, ALPHA_DROP_V=ALPHA_DROP_V,
@@ -506,11 +552,12 @@ if __name__ == "__main__":
     plot_shaping(ds, a10)
     da = load_alpha()
     plot_alpha_counting(da)
-    plot_alpha_amplitude(da)
     plot_alpha_amplitude(da, show_low=True, name="F3_alpha_amplitude_vs_voltage_with_low")
     calibration(ds)
     db, dg = load_beta(), load_gamma()
     plot_beta_gamma(db, dg)
+    plot_differential(da, "F6a_alpha_differential", "Am-241 alpha", BLUE, "o", exclude=(ALPHA_DROP_V,))
+    plot_differential(db, "F6b_beta_differential", "Cl-36 beta", BLUE, "o")
     eff = efficiency(db)
     make_tables(ds, da, db, dg, eff)
     write_summary()

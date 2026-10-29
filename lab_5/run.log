@@ -1,0 +1,139 @@
+settings: {'SIGMA_CENTROID': 1.0, 'AREA_10US_METHOD': 'line through 3 and 6 us', 'PLATEAU_START': 1000, 'ALPHA_DROP_V': 1050, 'AMPLITUDE_POINTS': [900, 1000], 'SHOW_LOW_AMPLITUDE': False, 'GAMMA_SOURCE': 'Co-60 gamma', 'A0_REL_UNC': 0.0, 'MEAS_DATE': None, 'F5_LOG_Y': True, 'T_ALPHA': 30.0, 'T_BETA': 30.0, 'T_GAMMA': 30.0}
+
+--- F1. Centroid vs shaping time ---
+sigma_c = FWHM/(2.35 sqrt(A)) (Knoll p. 728); sigma_c < 1 ch whenever FWHM < 2.35 sqrt(A):
+   0.5 us: A = 5.993e+05, FWHM limit for sigma_c < 1 ch = 1819 ch
+     1 us: A = 6.246e+05, FWHM limit for sigma_c < 1 ch = 1857 ch
+     2 us: A = 6.323e+05, FWHM limit for sigma_c < 1 ch = 1869 ch
+     3 us: A = 7.123e+05, FWHM limit for sigma_c < 1 ch = 1983 ch
+     6 us: A = 7.381e+05, FWHM limit for sigma_c < 1 ch = 2019 ch
+    10 us: A = 7.424e+05, FWHM limit for sigma_c < 1 ch = 2025 ch
+error bars drawn at SIGMA_CENTROID = 1 ch (upper bound; smaller than the markers)
+ballistic deficit relative to 10 us (C10 = 2421.64):
+   0.5 us: C = 1723.08, BD = 28.85 +/- 0.05 %
+     1 us: C = 2025.16, BD = 16.37 +/- 0.05 %
+     2 us: C = 2215.87, BD = 8.50 +/- 0.06 %
+     3 us: C = 2367.29, BD = 2.24 +/- 0.06 %
+     6 us: C = 2382.50, BD = 1.62 +/- 0.06 %
+
+--- F2. Alpha counting curve (LLD 1738, 30 s/point) ---
+settings: PLATEAU_START = 1000 V, ALPHA_DROP_V = 1050 V (hollow, excluded)
+rate column = counts/30 s: reproduced
+  hv  counts     rate  srate
+ 300       0     0.00   0.00
+ 400      23     0.77   0.16
+ 500     398    13.27   0.66
+ 550    2516    83.87   1.67
+ 600   11163   372.10   3.52
+ 625   19972   665.73   4.71
+ 650   32190  1073.00   5.98
+ 675   46571  1552.37   7.19
+ 700   61980  2066.00   8.30
+ 725  121059  4035.30  11.60
+ 750  224018  7467.27  15.78
+ 775  294972  9832.40  18.10
+ 800  390186 13006.20  20.82
+ 850  563218 18773.93  25.02
+ 900  617516 20583.87  26.19
+1000  669674 22322.47  27.28
+1050  286105  9536.83  17.83
+FLAG: rate falls from 22322 /s at 1000 V to 9537 /s at 1050 V (centroid 3232 -> 7166 ch)
+300 V has N = 0 (rate 0, no error bar); it cannot be drawn on the log axis.
+
+--- F3. Alpha pulse amplitude vs voltage ---
+settings: AMPLITUDE_POINTS = [900, 1000], SHOW_LOW_AMPLITUDE = False
+FLAG: centroids at 500-850 V are 1744-2133 ch, at or just above the LLD (1738); probably the LLD edge, not the alpha peak.
+  d ln(centroid)/dV, 900-1000 V: 0.00166 +/- 4.8e-06 /V (centroid x1.180 per 100 V)
+  d ln(centroid)/dV, 1000-1050 V: 0.01592 +/- 6.8e-06 /V (centroid x4.915 per 100 V)
+
+--- F4. Calibrated alpha spectrum: SKIPPED (no .SPE saved) ---
+k = 5486 keV / 2367.29 ch = 2.3174 +/- 0.0010 keV/ch (through origin; 800 V, gain 50, 3 us shaping only)
+
+--- F5. Beta (LLD 307) and gamma (LLD 229) counting curves, 30 s/point ---
+beta rate column = counts/30 s: reproduced
+beta:
+  hv  counts      c     rate  srate
+1000       0   0.00     0.00   0.00
+1100   23161 328.36   772.03   5.07
+1200   97809 334.88  3260.30  10.42
+1300  242325 304.65  8077.50  16.41
+1400  345372 311.34 11512.40  19.59
+1450  521827 320.22 17394.23  24.08
+1500  664725 507.70 22157.50  27.18
+1550  692883 773.28 23096.10  27.75
+gamma:
+  hv  counts    rate  srate
+1000       0    0.00   0.00
+1200   10490  349.67   3.41
+1300   24776  825.87   5.25
+1400   43711 1457.03   6.97
+1500   51324 1710.80   7.55
+1550   50648 1688.27   7.50
+1600   51362 1712.07   7.55
+1650   48634 1621.13   7.35
+1700   43041 1434.70   6.92
+FLAG: beta centroids at 1100-1450 V are 305-335 ch, at the LLD (307), like the alpha case.
+gamma source label (GAMMA_SOURCE) = 'Co-60 gamma': Co-60 or Cs-137? ASK
+
+--- F6a_alpha_differential: differential counting curve (Am-241 alpha) ---
+ vmid  v1   v2    drdv  sdrdv
+350.0 300  400   0.008  0.002
+450.0 400  500   0.125  0.007
+525.0 500  550   1.412  0.036
+575.0 550  600   5.765  0.078
+612.5 600  625  11.745  0.235
+637.5 625  650  16.291  0.305
+662.5 650  675  19.175  0.374
+687.5 675  700  20.545  0.439
+712.5 700  725  78.772  0.570
+737.5 725  750 137.279  0.783
+762.5 750  775  94.605  0.961
+787.5 775  800 126.952  1.104
+825.0 800  850 115.355  0.651
+875.0 850  900  36.199  0.724
+950.0 900 1000  17.386  0.378
+
+--- F6b_beta_differential: differential counting curve (Cl-36 beta) ---
+  vmid   v1   v2    drdv  sdrdv
+1050.0 1000 1100   7.720  0.051
+1150.0 1100 1200  24.883  0.116
+1250.0 1200 1300  48.172  0.194
+1350.0 1300 1400  34.349  0.256
+1425.0 1400 1450 117.637  0.621
+1475.0 1450 1500  95.265  0.726
+1525.0 1500 1550  18.772  0.777
+
+--- Efficiency (Cl-36, 1500 V, LLD 307, 60 s) ---
+settings: MEAS_DATE = None (decay elapsed 0.000 y), A0_REL_UNC = 0.0
+r = 1428191 / 60 s = 23803.18 +/- 19.92 /s; CSV 'uC' column check: r/3.7e4 = 0.6433 (CSV 0.6433)
+A0 = 1.032 uCi = 3.818e+04 Bq; lambda = 2.25e-06 /y; decay over 1 y would be 2.25e-04 % (negligible)
+eps_abs = 0.6234 +/- 0.0005 (counting only); eps_int (Omega = 2 pi) = 1.2468 +/- 0.0010
+FLAG: eps_abs > 0.5, the 2 pi geometric maximum; eps_int > 1 is unphysical.
+  beta curve at 1500 V: 22157.5 +/- 27.2 /s; efficiency run / curve = 1.0743
+  beta curve at 1550 V: 23096.1 +/- 27.7 /s; efficiency run / curve = 1.0306
+FLAG: efficiency-run rate is 7.4 +/- 0.2 % above the beta-curve rate at 1500 V
+
+wrote 9 LaTeX tables to /sessions/rcw-01xbygx6hcm2ey4qbs9ndddh/mnt/NERS 515/NERS-515-Lab/lab_5/tables
+
+=== RESULTS SUMMARY ===
+ballistic deficit at 0.5 us: 28.847 +/- 0.05068 %   [(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch]
+ballistic deficit at 1 us: 16.372 +/- 0.05383 %   [(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch]
+ballistic deficit at 2 us: 8.4971 +/- 0.05597 %   [(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch]
+ballistic deficit at 3 us: 2.2443 +/- 0.05775 %   [(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch]
+ballistic deficit at 6 us: 1.6163 +/- 0.05793 %   [(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch]
+alpha rate at 850 V: 18774 +/- 25.02 counts/s   [N/30 s, sqrt(N)/30 s (Eq. 3.40)]
+alpha rate at 900 V: 20584 +/- 26.19 counts/s   [N/30 s, sqrt(N)/30 s (Eq. 3.40)]
+alpha rate at 1000 V: 22322 +/- 27.28 counts/s   [N/30 s, sqrt(N)/30 s (Eq. 3.40)]
+alpha rate at 1050 V: 9536.8 +/- 17.83 counts/s   [N/30 s, sqrt(N)/30 s (Eq. 3.40)]
+d ln(centroid)/dV 900-1000 V: 0.0016585 +/- 4.786e-06 1/V   [two-point slope; Eq. 3.37, sigma_c=1 ch; Knoll Eq. 6.10]
+d ln(centroid)/dV 1000-1050 V: 0.015922 +/- 6.788e-06 1/V   [two-point slope; Eq. 3.37, sigma_c=1 ch; Knoll Eq. 6.10]
+energy calibration factor k: 2.3174 +/- 0.0009789 keV/channel   [5486 keV / C(3 us); Knoll Table 1.3; Eq. 3.37, sigma_c<=1 ch]
+beta rate at 1500 V: 22158 +/- 27.18 counts/s   [N/30 s, sqrt(N)/30 s (Eq. 3.40)]
+beta rate at 1550 V: 23096 +/- 27.75 counts/s   [N/30 s, sqrt(N)/30 s (Eq. 3.40)]
+gamma maximum rate: 1712.1 +/- 7.554 counts/s   [at 1600 V; Eq. 3.40]
+efficiency-run rate: 23803 +/- 19.92 counts/s   [1428191/60 s; Eq. 3.40]
+marked activity A0: 38184 +/- 0 Bq   [1.032 uCi x 3.7e4 Bq/uCi (Knoll p. 2); no stated uncertainty]
+activity at measurement: 38184 +/- 0 Bq   [A0 exp(-lambda t), Knoll Eq. 1.1; T1/2 = 3.08e5 y]
+absolute efficiency: 0.62338 +/- 0.0005216    [r/A; Eq. 3.37 (counting only); > 0.5 2pi limit]
+intrinsic efficiency (Omega=2pi): 1.2468 +/- 0.001043    [eps_abs 4pi/Omega, Knoll pp. 118-119]
+eff-run vs beta curve at 1500 V: 7.4272 +/- 0.1595 %   [r_eff/r_curve - 1; Eq. 3.37]

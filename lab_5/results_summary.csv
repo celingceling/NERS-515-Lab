@@ -1,5 +1,4 @@
 name,value,uncertainty,unit,source
-10 us peak area (estimated),772484.0,,counts,line through 3 and 6 us
 ballistic deficit at 0.5 us,28.846566789448474,0.050680796621283594,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
 ballistic deficit at 1 us,16.37237574536264,0.05383105021096932,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
 ballistic deficit at 2 us,8.49713417353529,0.05597289763146904,%,"(C10-C)/C10, Knoll p. 649; Eq. 3.37, sigma_c=1 ch"
