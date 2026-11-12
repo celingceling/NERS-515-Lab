@@ -1,0 +1,121 @@
+name,value,uncertainty,unit,source
+"gain exponent (slope ln C vs ln V, 600-1000 V)",5.912813392420699,0.13776135590602523,,"least squares, Knoll Eq. 9.3 G ~ V^(beta N)"
+HV-scan centroid at 1000 V,1537.17,0.10786858735257708,channel,"MAESTRO, Lab_6_Data"
+HV-scan amplitude at 1000 V,1.9712326978323325,0.0254,V,Lab 2 calibration
+HV-scan centroid at 1050 V,1622.93,0.06856096841241027,channel,"MAESTRO, Lab_6_Data"
+HV-scan amplitude at 1050 V,2.0832201619221733,0.0254,V,Lab 2 calibration
+HV-scan centroid at 1150 V,1638.71,0.035132475442976895,channel,"MAESTRO, Lab_6_Data"
+HV-scan amplitude at 1150 V,2.10382606424654,0.0254,V,Lab 2 calibration
+net total counts NaI2x2_WC 0 in,2053010.5,1445.2410698565136,counts,"sum of net spectrum, all channels"
+centroid NaI2x2_WC 0 in,834.9689542408745,0.06084441042647403,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM NaI2x2_WC 0 in,64.4821249416237,0.14469909354348773,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution NaI2x2_WC 0 in,7.722697306781742,0.017339011889366755,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts NaI2x2_WC 0 in,391788.53043968306,966.7205509890366,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf NaI2x2_WC 0 in,4.682897714246469,,,890/190
+net photopeak counts +/-1 FWHM ROI NaI2x2_WC 0 in,378764.4471463189,2538.1420477552388,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI NaI2x2_WC 0 in,393924.2903188883,819.959827830073,counts,ROI sensitivity check
+photopeak/total NaI2x2_WC 0 in,0.190836106507825,,,net peak / net total
+net total counts NaI2x2_WC 2 in,521319.5,746.3449269607183,counts,"sum of net spectrum, all channels"
+centroid NaI2x2_WC 2 in,819.293842279414,0.100926222766465,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM NaI2x2_WC 2 in,64.67385467707514,0.23840035016988814,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution NaI2x2_WC 2 in,7.89385338197362,0.02911451576221952,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts NaI2x2_WC 2 in,124040.26885285217,493.6576372988247,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf NaI2x2_WC 2 in,1.453378846985485,,,276/190
+net photopeak counts +/-1 FWHM ROI NaI2x2_WC 2 in,114783.76594028063,1365.475182846343,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI NaI2x2_WC 2 in,126723.99027089488,423.42635277136947,counts,ROI sensitivity check
+photopeak/total NaI2x2_WC 2 in,0.2379352179476351,,,net peak / net total
+net total counts NaI1x1_WC 0 in,2539756.5,1596.422171607498,counts,"sum of net spectrum, all channels"
+centroid NaI1x1_WC 0 in,684.113379956172,0.05716658022689237,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM NaI1x1_WC 0 in,59.27520946891118,0.1399227485130516,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution NaI1x1_WC 0 in,8.664530062649654,0.020465963128407517,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts NaI1x1_WC 0 in,381839.51977500715,981.1382204516461,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf NaI1x1_WC 0 in,8.77500712792775,,,1527/174
+net photopeak counts +/-1 FWHM ROI NaI1x1_WC 0 in,361445.5078553226,2562.6474031404473,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI NaI1x1_WC 0 in,379144.04894846556,826.4129459377642,counts,ROI sensitivity check
+photopeak/total NaI1x1_WC 0 in,0.15034493258507545,,,net peak / net total
+net total counts NaI1x1_WC 2 in,176708.5,430.7153932703126,counts,"sum of net spectrum, all channels"
+centroid NaI1x1_WC 2 in,663.0251909505437,0.138661443615799,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM NaI1x1_WC 2 in,46.834675090077695,0.3057795281095105,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution NaI1x1_WC 2 in,7.063785166734515,0.04614249428107363,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts NaI1x1_WC 2 in,29332.53987530777,211.2748190727057,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf NaI1x1_WC 2 in,1.0366850215814196,,,141/136
+net photopeak counts +/-1 FWHM ROI NaI1x1_WC 2 in,29783.74350848844,580.5794814390551,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI NaI1x1_WC 2 in,29310.382310177538,189.35856385525116,counts,ROI sensitivity check
+photopeak/total NaI1x1_WC 2 in,0.16599393846536964,,,net peak / net total
+net total counts NaI1x1_NC 0 in,2496871.0,1583.0075805251217,counts,"sum of net spectrum, all channels"
+centroid NaI1x1_NC 0 in,664.7142571381611,0.05718473906718318,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM NaI1x1_NC 0 in,58.101965222311755,0.1407410049314135,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution NaI1x1_NC 0 in,8.74089348894998,0.021186507776295042,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts NaI1x1_NC 0 in,371468.2348633557,979.1661013468989,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf NaI1x1_NC 0 in,9.485251280456698,,,1612/170
+net photopeak counts +/-1 FWHM ROI NaI1x1_NC 0 in,344551.3250824475,2487.545753067571,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI NaI1x1_NC 0 in,371237.9190261542,820.8116757576681,counts,ROI sensitivity check
+photopeak/total NaI1x1_NC 0 in,0.1487734988565111,,,net peak / net total
+net total counts NaI1x1_NC 2 in,179706.0,434.4513781771212,counts,"sum of net spectrum, all channels"
+centroid NaI1x1_NC 2 in,646.7761405479182,0.13612524430252299,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM NaI1x1_NC 2 in,46.67022626563046,0.2976693070206983,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution NaI1x1_NC 2 in,7.215823735565392,0.04604859513554219,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts NaI1x1_NC 2 in,29843.685182348432,211.180824096588,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf NaI1x1_NC 2 in,0.8593104609094891,,,117/136
+net photopeak counts +/-1 FWHM ROI NaI1x1_NC 2 in,29726.808943165528,580.213609922029,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI NaI1x1_NC 2 in,29740.518228080575,191.25606462559173,counts,ROI sensitivity check
+photopeak/total NaI1x1_NC 2 in,0.16606949785955077,,,net peak / net total
+net total counts BGO_WC 0 in,5076846.5,2254.76523168156,counts,"sum of net spectrum, all channels"
+centroid BGO_WC 0 in,146.48591483175477,0.01144848435970368,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM BGO_WC 0 in,27.34920227779254,0.02809660942766816,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution BGO_WC 0 in,18.670192495438382,0.019235839667584423,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts BGO_WC 0 in,2099245.8336887965,2342.3723281489183,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf BGO_WC 0 in,46.39416708428728,,,3665/79
+net photopeak counts +/-1 FWHM ROI BGO_WC 0 in,1992141.892630462,6308.317294594645,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI BGO_WC 0 in,2153660.4642270813,1977.906104459731,counts,ROI sensitivity check
+photopeak/total BGO_WC 0 in,0.4134940525952078,,,net peak / net total
+net total counts BGO_WC 2 in,255833.5,512.7896742330134,counts,"sum of net spectrum, all channels"
+centroid BGO_WC 2 in,142.75457261230116,0.03194485572955989,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM BGO_WC 2 in,23.75049136561101,0.07071728711208271,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution BGO_WC 2 in,16.63728939185268,0.049677372803396215,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts BGO_WC 2 in,143468.49539889136,469.5037128812087,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf BGO_WC 2 in,0.794965226159116,,,53/67
+net photopeak counts +/-1 FWHM ROI BGO_WC 2 in,141019.431010127,1241.21028398422,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI BGO_WC 2 in,142057.7752513054,424.90960793022134,counts,ROI sensitivity check
+photopeak/total BGO_WC 2 in,0.5607885417620889,,,net peak / net total
+net total counts CsI_WC 0 in,3489857.5,1870.5764485847671,counts,"sum of net spectrum, all channels"
+net total counts CsI_WC 2 in,160959.5,412.5024242353007,counts,"sum of net spectrum, all channels"
+centroid CsI_WC 2 in,395.80438330620643,0.1550355971302035,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+FWHM CsI_WC 2 in,56.53539868430832,0.3497750307012143,channel,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+resolution CsI_WC 2 in,14.283671699656445,0.08854761435324883,%,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+net photopeak counts CsI_WC 2 in,37221.48890946307,253.5094351004317,counts,"Gaussian + line fit to net spectrum, Knoll p. 728; Eq. 10.14"
+chi2/ndf CsI_WC 2 in,1.0667748201104452,,,177/166
+net photopeak counts +/-1 FWHM ROI CsI_WC 2 in,38060.36735206146,665.3645807529799,counts,ROI sensitivity check
+net photopeak counts +/-2 FWHM ROI CsI_WC 2 in,35794.69425274561,228.11388002438932,counts,ROI sensitivity check
+photopeak/total CsI_WC 2 in,0.23124754307427067,,,net peak / net total
+net total counts EJ200_WC 0 in,533586.5,733.1659089183021,counts,"sum of net spectrum, all channels"
+Compton edge channel EJ200_WC 0 in,83.69799633398648,,channel,"edge half-height, net spectrum"
+net total counts EJ200_WC 2 in,101341.5,324.47996856508723,counts,"sum of net spectrum, all channels"
+Compton edge channel EJ200_WC 2 in,83.8244167962675,,channel,"edge half-height, net spectrum"
+Compton edge predicted energy,477.65013623978206,,keV,Knoll Eqs. 10.3-10.4 / p. 252
+"Compton edge measured channel (2x2 NaI, 2 in)",661.4256198347107,,channel,"local max / edge half-height, net spectrum"
+"Compton edge measured energy (2x2 NaI, 2 in)",529.9934620212581,,keV,ch -> E through Lab 2 zero and photopeak
+backscatter predicted energy,184.34986376021797,,keV,Knoll Eqs. 10.3-10.4 / p. 252
+"backscatter measured channel (2x2 NaI, 2 in)",361,,channel,"local max / edge half-height, net spectrum"
+"backscatter measured energy (2x2 NaI, 2 in)",278.78301966393735,,keV,ch -> E through Lab 2 zero and photopeak
+Ba K X-ray predicted energy,32.0,,keV,Knoll Eqs. 10.3-10.4 / p. 252
+"Ba K X-ray measured channel (2x2 NaI, 2 in)",68,,channel,"local max / edge half-height, net spectrum"
+"Ba K X-ray measured energy (2x2 NaI, 2 in)",33.78174563414238,,keV,ch -> E through Lab 2 zero and photopeak
+sum-peak excess at 2C NaI2x2_WC 0 in,0.21666666666666662,,counts/channel,"2C = 1670; level -0.3, line -0.5"
+sum-peak excess at 2C NaI1x1_WC 0 in,-7.000000000000001,,counts/channel,"2C = 1368; level 0.5, line 7.5"
+sum-peak excess at 2C NaI1x1_NC 0 in,-9.983333333333333,,counts/channel,"2C = 1329; level 0.9, line 10.9"
+sum-peak excess at 2C BGO_WC 0 in,1146.8833333333337,,counts/channel,"2C = 293; level 3456.4, line 2309.5"
+"no-peak fit CsI_WC source (300, 470)",380.46119480853025,26977487.069342945,channel,"FWHM 1.02e+08, A -9.822e+05, chi2/ndf 372.7"
+"no-peak fit CsI_WC source (320, 470)",352.9067484987495,37834737.519833446,channel,"FWHM 2.313e+07, A -1.346e+05, chi2/ndf 410.9"
+"no-peak fit CsI_WC source (330, 480)",431.0256221569705,38842254.02964921,channel,"FWHM 1.134e+08, A -1.773e+06, chi2/ndf 566.6"
+"no-peak fit CsI_WC source (340, 470)",376.2183591602972,46784380.83539761,channel,"FWHM 4.806e+06, A -4.743e+05, chi2/ndf 438.8"
+"no-peak fit CsI_WC source (350, 460)",340.69334472031954,42599290.9734002,channel,"FWHM 4.12e+06, A -5.319e+05, chi2/ndf 317.1"
+"no-peak fit CsI_WC source (300, 500)",260.7412612153947,18791637.145643894,channel,"FWHM 1.675e+07, A 1.959e+05, chi2/ndf 845.1"
+"no-peak fit EJ200_WC source (40, 110)",69.11403954132929,0.04297102177902421,channel,"FWHM 22.06, A 1.73e+05, chi2/ndf 122.2"
+"no-peak fit EJ200_WC source (45, 100)",70.7794000303638,0.04929232490887653,channel,"FWHM 21.04, A 1.532e+05, chi2/ndf 16.3"
+"no-peak fit EJ200_WC source (35, 130)",59.22690596920093,0.04890452875882023,channel,"FWHM 42.32, A 4.892e+05, chi2/ndf 248.5"
+"no-peak fit EJ200_WC source (30, 150)",57.509966283232735,0.04176312011343666,channel,"FWHM 44.09, A 4.826e+05, chi2/ndf 258.3"
+"no-peak fit EJ200_WC 2inch (40, 110)",68.9287775312389,0.0918182605241122,channel,"FWHM 22.76, A 3.775e+04, chi2/ndf 39.3"
+"no-peak fit EJ200_WC 2inch (45, 100)",71.2163948448163,0.10478886766415846,channel,"FWHM 20.88, A 3.109e+04, chi2/ndf 4.7"
+"no-peak fit EJ200_WC 2inch (35, 130)",59.54643972099849,0.09497188906262093,channel,"FWHM 40.99, A 9.515e+04, chi2/ndf 59.8"
+"no-peak fit EJ200_WC 2inch (30, 150)",57.85858032859415,0.08723317587593582,channel,"FWHM 42.38, A 9.296e+04, chi2/ndf 62.9"

@@ -1,0 +1,88 @@
+settings: {'K_ROI': 1.5, 'K_ROI_ALT': (1.0, 2.0), 'N_SIDE': 3, 'FIT_V': (600, 1000)}
+
+--- Files ---
+  NaI_bg_WC            live   240 real   240 gross     47615  10/29/2026 15:11:14
+  NaI_source_WC        live   120 real   148 gross   2076818  10/29/2026 15:25:32
+  NaI_2inch_WC         live   120 real   127 gross    545127  10/29/2026 15:31:59
+  NaI1x1_bg_WC         live   240 real   240 gross     11743  10/29/2026 16:06:05
+  NaI1x1_source_WC     live   120 real   151 gross   2545628  10/29/2026 16:12:39
+  NaI1x1_2inch_WC      live   120 real   122 gross    182580  10/29/2026 16:18:41
+  NaI1x1_bg_NC         live   240 real   240 gross     12056  10/29/2026 15:44:16
+  NaI1x1_source_NC     live   120 real   151 gross   2502899  10/29/2026 15:57:07
+  NaI1x1_2inch_NC      live   120 real   122 gross    185734  10/29/2026 15:51:24
+  BGO_bg_WC            live   240 real   240 gross      9493  10/29/2026 16:28:24
+  BGO_source_WC        live   120 real   169 gross   5081593  10/29/2026 16:33:54
+  BGO_2inch_WC         live   120 real   122 gross    260580  10/29/2026 16:40:21
+  CsI(TI)_bg_WC        live   240 real   240 gross     12265  10/29/2026 16:51:14
+  CsI(TI)_source_WC    live   120 real   162 gross   3495990  10/29/2026 16:56:13
+  CsI(TI)_2inch_WC     live   120 real   122 gross    167092  10/29/2026 17:00:01
+  EJ-200_bg_WC         live   240 real   240 gross      5261  10/29/2026 17:16:10
+  EJ-200_source_WC     live   120 real   124 gross    536217  10/29/2026 17:13:33
+  EJ-200_2inch_WC      live   120 real   120 gross    103972  10/29/2026 17:10:40
+
+--- HV scan (2x2 NaI(Tl), 20 s live, amp gain 20 x 0.5) ---
+    600 V: C =    71.16 +/- 0.054 ch (0.057 V), A = 3181, FWHM = 7.16
+    650 V: C =   128.98 +/- 0.094 ch (0.132 V), A = 3184, FWHM = 12.44
+    700 V: C =   210.89 +/- 0.141 ch (0.239 V), A = 3187, FWHM = 18.73
+    750 V: C =   321.05 +/- 0.168 ch (0.383 V), A = 3089, FWHM = 21.97
+    800 V: C =   464.76 +/- 0.184 ch (0.571 V), A = 3281, FWHM = 24.77
+    850 V: C =   647.02 +/- 0.314 ch (0.809 V), A = 3298, FWHM = 42.39
+    900 V: C =   873.92 +/- 0.043 ch (1.105 V), A = 3348, FWHM = 5.86
+    950 V: C =  1162.02 +/- 0.067 ch (1.481 V), A = 3216, FWHM = 8.99
+   1000 V: C =  1537.17 +/- 0.108 ch (1.971 V), A = 3169, FWHM = 14.27
+   1050 V: C =  1622.93 +/- 0.069 ch (2.083 V), A = 3462, FWHM = 9.48
+   1100 V: C =  1630.87 +/- 0.201 ch (2.094 V), A = 3214, FWHM = 26.82
+   1150 V: C =  1638.71 +/- 0.035 ch (2.104 V), A = 3891, FWHM = 5.15
+log-log slope 600-1000 V: 5.913 +/- 0.138
+two-point local slopes: 600-650: 7.43, 650-700: 6.63, 700-750: 6.09, 750-800: 5.73, 800-850: 5.46, 850-900: 5.26, 900-950: 5.27, 950-1000: 5.45, 1000-1050: 1.11, 1050-1100: 0.10, 1100-1150: 0.11
+
+--- Photopeaks (net spectrum, linear continuum, ROI = c +/- 1.5 FWHM) ---
+  NaI2x2_WC  0 in: C = 834.97+/-0.06  FWHM = 64.48+/-0.14  R = 7.72+/-0.02%  A = 391789+/-967  ROI [738,932]  chi2/ndf = 890/190 = 4.68  passes 3 | +/-1 FWHM: A -3.3%, F 63.3; +/-2 FWHM: A +0.5%, F 64.5 | summation: A 398524, C 833.4, F 63.6 | net total 2053010+/-1445  P/T = 0.191
+      sheet (MAESTRO): area 500662, centroid 836.3, FWHM 60.0
+  NaI2x2_WC  2 in: C = 819.29+/-0.10  FWHM = 64.67+/-0.24  R = 7.89+/-0.03%  A = 124040+/-494  ROI [722,916]  chi2/ndf = 276/190 = 1.45  passes 3 | +/-1 FWHM: A -7.5%, F 61.1; +/-2 FWHM: A +2.2%, F 66.1 | summation: A 127222, C 818.7, F 64.1 | net total 521320+/-746  P/T = 0.238
+      sheet (MAESTRO): area 146649, centroid 819.5, FWHM 61.34
+  NaI1x1_WC  0 in: C = 684.11+/-0.06  FWHM = 59.28+/-0.14  R = 8.66+/-0.02%  A = 381840+/-981  ROI [595,773]  chi2/ndf = 1527/174 = 8.78  passes 3 | +/-1 FWHM: A -5.3%, F 56.9; +/-2 FWHM: A -0.7%, F 59.1 | summation: A 379490, C 686.0, F 57.0 | net total 2539756+/-1596  P/T = 0.150
+      sheet (MAESTRO): area 468213, centroid 682.16, FWHM 52.89
+  NaI1x1_WC  2 in: C = 663.03+/-0.14  FWHM = 46.83+/-0.31  R = 7.06+/-0.05%  A = 29333+/-211  ROI [593,733]  chi2/ndf = 141/136 = 1.04  passes 2 | +/-1 FWHM: A +1.5%, F 47.3; +/-2 FWHM: A -0.1%, F 46.8 | summation: A 29800, C 662.7, F 46.6 | net total 176708+/-431  P/T = 0.166
+      sheet (MAESTRO): area 31425, centroid 662.99, FWHM 44.85
+  NaI1x1_NC  0 in: C = 664.71+/-0.06  FWHM = 58.10+/-0.14  R = 8.74+/-0.02%  A = 371468+/-979  ROI [578,752]  chi2/ndf = 1612/170 = 9.49  passes 4 | +/-1 FWHM: A -7.2%, F 55.0; +/-2 FWHM: A -0.1%, F 58.3 | summation: A 375235, C 666.7, F 56.2 | net total 2496871+/-1583  P/T = 0.149
+      sheet (MAESTRO): area 479750, centroid 663.01, FWHM 53.29
+  NaI1x1_NC  2 in: C = 646.78+/-0.14  FWHM = 46.67+/-0.30  R = 7.22+/-0.05%  A = 29844+/-211  ROI [577,717]  chi2/ndf = 117/136 = 0.86  passes 3 | +/-1 FWHM: A -0.4%, F 46.5; +/-2 FWHM: A -0.3%, F 46.5 | summation: A 29680, C 646.9, F 45.4 | net total 179706+/-434  P/T = 0.166
+      sheet (MAESTRO): area 31793, centroid 747.7, FWHM 42.31
+  BGO_WC     0 in: C = 146.49+/-0.01  FWHM = 27.35+/-0.03  R = 18.67+/-0.02%  A = 2099246+/-2342  ROI [105,188]  chi2/ndf = 3665/79 = 46.39  passes 3 | +/-1 FWHM: A -5.1%, F 26.4; +/-2 FWHM: A +2.6%, F 28.0 | summation: A 2149687, C 147.4, F 27.0 | net total 5076846+/-2255  P/T = 0.413
+      sheet (MAESTRO): area 2943641, centroid 146.19, FWHM 26.59
+  BGO_WC     2 in: C = 142.75+/-0.03  FWHM = 23.75+/-0.07  R = 16.64+/-0.05%  A = 143468+/-470  ROI [107,178]  chi2/ndf = 53/67 = 0.79  passes 2 | +/-1 FWHM: A -1.7%, F 23.5; +/-2 FWHM: A -1.0%, F 23.5 | summation: A 141322, C 142.9, F 23.7 | net total 255834+/-513  P/T = 0.561
+  CsI_WC     0 in: NO resolvable photopeak; net total 3489858 +/- 1871
+  CsI_WC     2 in: C = 395.80+/-0.16  FWHM = 56.54+/-0.35  R = 14.28+/-0.09%  A = 37221+/-254  ROI [311,481]  chi2/ndf = 177/166 = 1.07  passes 3 | +/-1 FWHM: A +2.3%, F 57.4; +/-2 FWHM: A -3.8%, F 54.6 | summation: A 35440, C 396.9, F 58.0 | net total 160960+/-413  P/T = 0.231
+  EJ200_WC   0 in: no photopeak; Compton edge (half-height) ch 83.7; net total 533586 +/- 733
+  EJ200_WC   2 in: no photopeak; Compton edge (half-height) ch 83.8; net total 101342 +/- 324
+
+--- Features, 2x2 NaI(Tl) 2 in (calibration through Lab 2 zero and the photopeak) ---
+  Compton edge : predicted  477.7 keV -> ch  598.8; measured ch  661.4 ->  530.0 keV
+  backscatter  : predicted  184.3 keV -> ch  248.1; measured ch  361.0 ->  278.8 keV
+  Ba K X-ray   : predicted   32.0 keV -> ch   65.9; measured ch   68.0 ->   33.8 keV
+  Compton edge shoulder max ch 619, valley min ch 706
+
+--- Sum-peak check, 0 in spectra (excess at 2C over the line through 2C +/- 2 FWHM) ---
+  NaI2x2_WC : 2C = 1670; smoothed level at 2C -0.3/ch, max 0.0/ch at 1706; line -0.5/ch
+  NaI1x1_WC : 2C = 1368; smoothed level at 2C 0.5/ch, max 16.0/ch at 1253; line 7.5/ch
+  NaI1x1_NC : 2C = 1329; smoothed level at 2C 0.9/ch, max 22.9/ch at 1225; line 10.9/ch
+  BGO_WC    : 2C = 293; smoothed level at 2C 3456.4/ch, max 4065.7/ch at 238; line 2309.5/ch
+
+--- Fits where no photopeak is evident (fixed windows) ---
+  CsI_WC    source window (300, 470): H0 = 380.5 +/- 2.7e+07, FWHM = 1.02e+08 +/- 9.48e+25, A = -9.822e+05 +/- 9.13e+23, chi2/ndf = 372.7
+  CsI_WC    source window (320, 470): H0 = 352.9 +/- 3.78e+07, FWHM = 2.313e+07 +/- 3.77e+12, A = -1.346e+05 +/- 1.05e+11, chi2/ndf = 410.9
+  CsI_WC    source window (330, 480): H0 = 431.0 +/- 3.88e+07, FWHM = 1.134e+08 +/- 2.86e+13, A = -1.773e+06 +/- 8.1e+11, chi2/ndf = 566.6
+  CsI_WC    source window (340, 470): H0 = 376.2 +/- 4.68e+07, FWHM = 4.806e+06 +/- 7.25e+11, A = -4.743e+05 +/- 7.09e+10, chi2/ndf = 438.8
+  CsI_WC    source window (350, 460): H0 = 340.7 +/- 4.26e+07, FWHM = 4.12e+06 +/- 4.92e+23, A = -5.319e+05 +/- 5.41e+22, chi2/ndf = 317.1
+  CsI_WC    source window (300, 500): H0 = 260.7 +/- 1.88e+07, FWHM = 1.675e+07 +/- 1.87e+25, A = 1.959e+05 +/- 7.04e+22, chi2/ndf = 845.1
+  EJ200_WC  source window (40, 110): H0 = 69.1 +/- 0.043, FWHM = 22.06 +/- 0.113, A = 1.73e+05 +/- 1.09e+03, chi2/ndf = 122.2
+  EJ200_WC  source window (45, 100): H0 = 70.8 +/- 0.0493, FWHM = 21.04 +/- 0.129, A = 1.532e+05 +/- 1.22e+03, chi2/ndf = 16.3
+  EJ200_WC  source window (35, 130): H0 = 59.2 +/- 0.0489, FWHM = 42.32 +/- 0.15, A = 4.892e+05 +/- 2.92e+03, chi2/ndf = 248.5
+  EJ200_WC  source window (30, 150): H0 = 57.5 +/- 0.0418, FWHM = 44.09 +/- 0.0995, A = 4.826e+05 +/- 1.4e+03, chi2/ndf = 258.3
+  EJ200_WC  2inch  window (40, 110): H0 = 68.9 +/- 0.0918, FWHM = 22.76 +/- 0.244, A = 3.775e+04 +/- 506, chi2/ndf = 39.3
+  EJ200_WC  2inch  window (45, 100): H0 = 71.2 +/- 0.105, FWHM = 20.88 +/- 0.269, A = 3.109e+04 +/- 511, chi2/ndf = 4.7
+  EJ200_WC  2inch  window (35, 130): H0 = 59.5 +/- 0.095, FWHM = 40.99 +/- 0.265, A = 9.515e+04 +/- 939, chi2/ndf = 59.8
+  EJ200_WC  2inch  window (30, 150): H0 = 57.9 +/- 0.0872, FWHM = 42.38 +/- 0.189, A = 9.296e+04 +/- 507, chi2/ndf = 62.9
+
+wrote tables to /sessions/rcw-01xjn1x6fj6tln2y8cs9rfv1/mnt/NERS 515/NERS-515-Lab/lab_6/tables
