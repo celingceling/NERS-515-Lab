@@ -1,0 +1,54 @@
+\section{Theory}
+\label{sec:theory}
+
+\subsection{Silicon Surface Barrier Detectors}
+\label{subsec:si}
+
+Pure Si has a full valence band separated from the conduction band by a 1.115~eV gap, so it has almost no free carriers. Doping replaces a few ppm of Si atoms with impurities. A donor's extra valence electron is weakly bound and freed by thermal energy, leaving a fixed positive ion. An acceptor leaves a bond unfilled; this hole moves as neighboring electrons fill it, and the acceptor becomes a fixed negative ion once filled~\cite{knoll}.
+
+Our detector is n-type Si with a gold contact evaporated onto an etched, slightly oxidized surface, where a high density of electron traps acts as the p-type side~\cite{knoll}. Free electrons diffuse into the traps, each leaving a fixed donor ion behind, and the field of this space charge opposes further diffusion. At equilibrium a layer with no free carriers remains, the depletion region, with a contact potential of about 1~V across it~\cite{knoll}. The detector therefore gives pulses at 0~V, but the weak field lets carriers be lost to trapping and recombination, so the pulses are smaller and broader.
+
+A reverse bias $V$ pulls free electrons away from the junction, exposing more donor ions, while an equal negative charge builds on the front side. Since the front side is much more heavily doped, the depletion region extends almost entirely into the Si~\cite{knoll}:
+\begin{equation}
+    d \simeq \left(\frac{2\epsilon V}{eN}\right)^{1/2} = \left(2\epsilon V \mu \rho_d\right)^{1/2},
+    \label{eq:depletion}
+\end{equation}
+with $\epsilon = 12\epsilon_0$, $N$ the donor concentration, $\mu$ the electron mobility and $\rho_d$ the resistivity. The separated charge acts as a capacitor, with capacitance per unit area and peak field~\cite{knoll}
+\begin{equation}
+    C = \frac{\epsilon}{d} \simeq \left(\frac{e\epsilon N}{2V}\right)^{1/2}, \qquad \mathcal{E}_{\max} \simeq \frac{2V}{d}.
+    \label{eq:capfield}
+\end{equation}
+
+An alpha stopping in Si creates $E/\varepsilon$ electron--hole pairs ($\varepsilon = 3.62$~eV), $1.52\times10^6$ at 5.486~MeV~\cite{knoll}. Pairs made in the depletion region are swept to the electrodes and form the pulse; pairs made outside it, where the field is zero, recombine. As $V$ increases, $\mathcal{E}_{\max}$ grows as $\sqrt{V}$ and fewer carriers are lost, so the pulse height rises until collection is complete and then plateaus~\cite{knoll}. Meanwhile $C$ falls as $V^{-1/2}$, lowering the electronic noise and FWHM.
+
+\subsection{Alpha Interactions and Range in Air}
+\label{subsec:range}
+
+$^{241}$Am emits 5.486~MeV (85\%) and 5.443~MeV (13\%) alphas~\cite{knoll}. They lose energy through Coulomb interactions with absorber electrons, which excite or ionize atoms. Each collision transfers only a small fraction of the energy, so the track is straight with a definite range~\cite{knoll}. The stopping power is given by the Bethe formula~\cite{knoll}
+\begin{equation}
+    -\frac{dE}{dx} = \frac{4\pi e^4 z^2}{m_0 v^2} N Z \ln\frac{2m_0v^2}{I},
+    \label{eq:bethe}
+\end{equation}
+with $z=2$, $v$ the alpha velocity, $NZ$ the electron density and $I$ the mean excitation energy. Since $-dE/dx \propto 1/E$, the loss grows as the alpha slows, peaking near the end of the track (the Bragg peak) before falling as the alpha picks up electrons~\cite{knoll}. The energy reaching the detector thus falls nonlinearly with air thickness: slowly at first, then rapidly near the range. Energy straggling widens the energy distribution with depth before it narrows near the end of the range~\cite{knoll}, so the MCA peak shifts down and broadens.
+
+The number of alphas transmitted stays at $I_0$ until the absorber thickness nears the shortest track, then drops sharply to zero. The mean range is where $I/I_0 = 0.5$; the extrapolated range is where the linear tail reaches zero~\cite{knoll}. The empirical extrapolated range in air at 288~K and 1~atm is~\cite{labmanual}
+\begin{equation}
+    R\,[\text{cm}] = 1.24E_\alpha - 2.62, \qquad R\,[\text{mm}] = (0.005E_\alpha + 2.85)E_\alpha^{1.5},
+    \label{eq:range}
+\end{equation}
+giving 4.18~cm and 3.70~cm at 5.486~MeV. Since $R \propto 1/\rho$~\cite{knoll}, lowering the pressure at fixed separation $x$ reduces the energy lost in air and raises the pulse height. If the pulse height reaches zero at pressure $P^*$, the range at atmospheric pressure $P_0$ is $R = xP^*/P_0$. Ranges are corrected to 288~K and 1~atm using the ideal gas law, $\rho \propto P/T$, i.e.\ $R_{288} = R\,(P/P_0)(288~\text{K}/T)$.
+
+\subsection{Geometric Efficiency}
+\label{subsec:geom}
+
+In the distance method, the count rate also falls because the detector subtends a smaller solid angle. For a point source on the axis of a detector of radius $a$ at distance $d$~\cite{knoll},
+\begin{equation}
+    \epsilon_{\text{geom}} = \frac{\Omega}{4\pi} = \frac{1}{2}\left(1 - \frac{d}{\sqrt{d^2 + a^2}}\right).
+    \label{eq:solidangle}
+\end{equation}
+For our disk source of radius $s$ we use Knoll's coaxial disk approximation in $(s/d)^2$ and $(a/d)^2$~\cite{knoll}. Each peak area $A$ is divided by its live time and $\epsilon_{\text{geom}}$ before normalizing to the smallest separation $x_0$:
+\begin{equation}
+    \frac{I}{I_0} = \frac{A(x)/[t\,\epsilon_{\text{geom}}(x)]}{A(x_0)/[t_0\,\epsilon_{\text{geom}}(x_0)]}.
+    \label{eq:attenuation}
+\end{equation}
+The pressure method has fixed geometry and needs no correction.
